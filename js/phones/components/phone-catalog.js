@@ -49,7 +49,11 @@ export default class PhoneCatalog {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a 
+                class="btn btn-success js-addInCart" 
+                data-id="${ phone.id }"
+                data-name="${ phone.name }"
+              >
                 Add
               </a>
             </div>

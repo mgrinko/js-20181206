@@ -105,3 +105,11 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+
+.delete_cart{
+  cursor: pointer;
+  color: #f00;
+}
+.delete_cart:hover{
+  color: #a50000;
+}
