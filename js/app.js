@@ -1,7 +1,9 @@
 'use strict';
 
-import phonePages from './phones/phones-page.js';
+import PhonePages from './phones/phones-page.js';
 
-let curentPage = new phonePages({
+
+
+let curentPage = new PhonePages({
     element: document.querySelector('[data-view]')
 });
