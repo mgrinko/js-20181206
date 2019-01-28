@@ -3,6 +3,8 @@ export default class PhoneViewer {
     this._element = element;
     this._onBackCatalog = onBackCatalog;
 
+    this._phoneDetails = null;
+
     //галерея
     this._element.addEventListener('click', (event) => {
         const preview_image = event.target.closest('.js-preview_item_images img');
@@ -23,17 +25,6 @@ export default class PhoneViewer {
     });
   }
 
-  hide() {
-    this._element.hidden = true;
-  }
-
-  show(phoneDetails) {
-    this._element.hidden = false;
-
-    this._phoneDetails = phoneDetails;
-
-    this._render();
-  }
 
   _render() {
     let phone = this._phoneDetails;

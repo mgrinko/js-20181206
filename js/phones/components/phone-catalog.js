@@ -21,13 +21,6 @@ export default class PhoneCatalog {
     });
   }
 
-  hide() {
-    this._element.hidden = true;
-  }
-
-  show() {
-    this._element.hidden = false;
-  }
 
   _render() {
 

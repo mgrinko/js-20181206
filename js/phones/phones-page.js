@@ -1,13 +1,20 @@
 'use strict';
 
+import Components from './components/components.js';
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
-export default class PhonesPage {
+
+
+
+export default class PhonesPage extends Components{
+
   constructor({ element }) {
+    super();
+
     this._element = element;
 
     this._render();
@@ -18,16 +25,20 @@ export default class PhonesPage {
       onPhoneSelected: (phoneId) => {
         let phoneDetails = PhoneService.getById(phoneId);
 
-        this._catalog.hide();
-        this._viewer.show(phoneDetails);
+        this._show(this._viewer._element,()=>{
+            this._viewer._phoneDetails = phoneDetails;
+            this._viewer._render();
+        });
+        this._hide(this._catalog._element);
+
       },
     });
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
       onBackCatalog: () => {
-          this._catalog.show();
-          this._viewer.hide();
+          this._show(this._catalog._element,);
+          this._hide(this._viewer._element);
       },
     });
 
