@@ -37,6 +37,35 @@ export default class PhonesPage {
 
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
+      onSort:()=>{
+          const valueSearch = this._filter._search_input.value.toLowerCase();
+          const valueSort = this._filter._sortable_options.value;
+          let phonesList = PhoneService.getAll();
+
+          //фильтрация
+          phonesList = phonesList.filter((phone)=>{
+              let namePhone = phone.name.toLowerCase();
+              return namePhone.includes(valueSearch);
+          });
+
+          //сортировка
+          phonesList.sort((a,b)=>{
+            let valA = a[valueSort];
+            let valB = b[valueSort];
+            if(valueSort==='name'){
+                valA.toLowerCase();
+                valB.toLowerCase();
+            }
+
+              if (valA < valB) return -1;//сортируем строки по возрастанию
+              if (valA > valB) return 1;
+              return 0;
+          });
+
+          this._catalog._phones = phonesList;
+          this._catalog._render();
+
+      }
     });
   }
 

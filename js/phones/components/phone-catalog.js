@@ -30,6 +30,17 @@ export default class PhoneCatalog {
   }
 
   _render() {
+
+    if(!this._phones.length){
+      this._element.innerHTML = `
+        <ul class="phones">
+          <li><h2>Ничего не нашлось</h2></li>
+        </ul>
+      `;
+
+      return;
+    }
+
     this._element.innerHTML = `
       <ul class="phones">
       
