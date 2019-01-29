@@ -31,6 +31,7 @@ export default class PhoneCatalog {
     this._element.hidden = false;
   }
 
+
   _render() {
     this._element.innerHTML = `
       <ul class="phones">

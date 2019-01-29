@@ -18,7 +18,9 @@ export default class PhonesPage {
         let phoneDetails = PhoneService.getById(phoneId);
 
         this._catalog.hide();
+        this._viewer.getCurrent(phoneId);
         this._viewer.show(phoneDetails);
+
       },
 
     });
@@ -29,8 +31,7 @@ export default class PhonesPage {
         let phoneDetails = PhoneService.getById(phoneId);
         this._catalog.show();
         this._viewer.hide(phoneDetails);
-      },
-      phoneId:  'motorola-xoom-with-wi-fi'
+      }
     });
 
     this._cart = new ShoppingCart({
@@ -61,7 +62,7 @@ export default class PhonesPage {
         <!--Main content-->
         <div class="col-md-10">
           <div data-component="phone-catalog"></div>
-          <div data-component="phone-viewer" hidden></div>
+          <div data-component="phone-viewer" data-current-phone="" hidden></div>
         </div>
       </div>
     `;

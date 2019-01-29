@@ -1448,17 +1448,9 @@ const PhoneService = {
 
   getById(phoneId) {
     return phoneDetails;
-  },
-  // getCurrentPhone() {
-  //  return document.addEventListener('click',function (event) {
-  //     const element = event.target;
-  //     if(!element.parentNode.dataset.phoneId) {
-  //       return;
-  //     }
-  //     console.log('helper',element.parentNode.dataset.phoneId);
-  //     return element.parentNode.dataset.phoneId ;
-  //   })
-  // }
+  }
+
+
 };
 
 export default PhoneService;
