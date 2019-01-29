@@ -1,6 +1,7 @@
 export default class PhoneViewer {
-  constructor({ element }) {
+  constructor({ element, onClose }) {
     this._element = element;
+    this._onClose = onClose;
 
   }
 
@@ -14,6 +15,10 @@ export default class PhoneViewer {
     this._phoneDetails = phoneDetails;
 
     this._render();
+    this._element.querySelector('[data-back]').addEventListener('click', ()=>{
+      this.hide();
+      this._onClose();
+    });
   }
   _render() {
     let phone = this._phoneDetails;
@@ -21,7 +26,7 @@ export default class PhoneViewer {
     this._element.innerHTML = `
       <img class="phone" src="${ phone.images[0] }">
 
-      <button>Back</button>
+      <button data-back>Back</button>
       <button>Add to basket</button>
   
   
