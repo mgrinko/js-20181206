@@ -11,7 +11,6 @@ export default class PhonesPage {
     this._element = element;
 
     this._render();
-
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
       phones: PhoneService.getAll(),
@@ -19,12 +18,20 @@ export default class PhonesPage {
         let phoneDetails = PhoneService.getById(phoneId);
 
         this._catalog.hide();
+        this._viewer.getCurrent(phoneId);
         this._viewer.show(phoneDetails);
+
       },
+
     });
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+      onPhoneUnSelected: (phoneId) => {
+        let phoneDetails = PhoneService.getById(phoneId);
+        this._catalog.show();
+        this._viewer.hide(phoneDetails);
+      }
     });
 
     this._cart = new ShoppingCart({
@@ -34,6 +41,7 @@ export default class PhonesPage {
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
     });
+
   }
 
   _render() {
@@ -54,7 +62,7 @@ export default class PhonesPage {
         <!--Main content-->
         <div class="col-md-10">
           <div data-component="phone-catalog"></div>
-          <div data-component="phone-viewer" hidden></div>
+          <div data-component="phone-viewer" data-current-phone="" hidden></div>
         </div>
       </div>
     `;
