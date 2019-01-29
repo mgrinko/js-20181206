@@ -1,8 +1,28 @@
 /* app css stylesheet */
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-  padding: 30px 5%;
-  background-color: lightgoldenrodyellow;
+  padding: 15px 5%;
+  background-color: #f1f1e6;
+}
+
+h1 {
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid #ececec;
+  margin-bottom: 1.1em;
+}
+
+a:hover, .link-come-back:hover {
+  opacity: 0.75;
+}
+
+header, footer {
+  padding: 15px;
+  letter-spacing: 5px;
+  color: #ccc;
 }
 
 .phone-images {
@@ -16,14 +36,21 @@ body {
 
 .phones {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .thumb {
   float: left;
-  margin: -0.5em 1em 1.5em 0;
-  padding-bottom: 1em;
-  height: 100px;
-  width: 100px;
+  margin: 0 2em 0 0;
+  padding: 8px 5px 0;
+  height: 120px;
+  width: 120px;
+  border-right: 1px solid #ccc;
+}
+
+.thumb img {
+  width: 90%;
 }
 
 .phones__btn-buy-wrapper {
@@ -36,8 +63,18 @@ body {
 
 .phones li {
   clear: both;
-  height: 115px;
-  padding-top: 15px;
+  height: 120px;
+  margin: 0 0 15px 0;
+  padding: 0;
+}
+
+.phone-name {
+  display: block;
+  margin-top: 1.3em;
+}
+
+.thumbnail p {
+  padding-right: 15%;
 }
 
 /** Detail View **/
@@ -46,6 +83,7 @@ img.phone {
   margin-right: 3em;
   margin-bottom: 2em;
   background-color: white;
+  border: 1px solid #ccc;
   padding: 2em;
   height: 400px;
   width: 400px;
@@ -58,15 +96,21 @@ img.phone:first-child {
 
 
 ul.phone-thumbs {
-  margin: 0;
+  margin: 1em 0 0;
+  padding: 0;
   list-style: none;
+  display: inline-block;
 }
 
 ul.phone-thumbs li {
-  border: 1px solid black;
+  border: 1px solid #ccc;
   display: inline-block;
-  margin: 1em;
+  margin: 0.5em;
   background-color: white;
+}
+
+ul.phone-thumbs li:first-child {
+  margin: 0.5em 0.5em 0.5em 0;
 }
 
 ul.phone-thumbs img {
@@ -102,20 +146,67 @@ ul.specs dt {
   font-weight: bold;
 }
 
-h1 {
-  border-bottom: 1px solid gray;
-}
-
 .link-come-back {
   background: none;
   border: none;
   outline: none;
   text-transform: uppercase;
+  color: #4cae4c;
+}
+
+.link-come-back:focus {
+  outline: none;
 }
 
 .link-come-back::before {
   content: '\2190';
-  font-size: 30px;
+  font-size: 25px;
   display: inline-block;
-  margin-right: 10px;
+  vertical-align: top;
+  margin: -10px 10px 0 0;
+}
+
+.btn-mg {
+  margin: 2em 0 0;
+}
+
+/*  Shopping Cart */
+.shopping-cart {
+  margin: 25px 0;
+  padding: 15px 5px 30px;
+  border: 1px solid #ccc;
+  background-color: rgba(255,255,255,0.4);
+}
+
+.shopping-cart h4 {
+  text-align: center;
+}
+
+.shopping-cart ol {
+  margin: 25px 0 0;
+  padding: 0;
+  list-style-position: inside;
+}
+
+.shopping-cart li {
+  margin: 15px 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px dotted #ccc;
+}
+
+.shopping-cart li img {
+  width: 25px;
+}
+
+.btn-remove {
+  float: right;
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  padding: 0 0 0 1px;
+  line-height: 1.07;
+  border-radius: 50%;
+  border: 1px solid #999;
+  color: #999;
+  font-size: 1.1em;
 }

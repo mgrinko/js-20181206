@@ -25,6 +25,10 @@ export default class PhonesPage {
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+      onPhonesCatalog: () => {
+        this._catalog.show();
+        this._viewer.hide();
+      },
     });
 
     this._cart = new ShoppingCart({
@@ -39,18 +43,18 @@ export default class PhonesPage {
   _render() {
     this._element.innerHTML = `
       <div class="row">
-    
+
         <!--Sidebar-->
         <div class="col-md-2">
           <section>
             <div data-component="filter"></div>
           </section>
-    
+
           <section>
             <div data-component="shopping-cart"></div>
           </section>
         </div>
-    
+
         <!--Main content-->
         <div class="col-md-10">
           <div data-component="phone-catalog"></div>

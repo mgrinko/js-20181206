@@ -1,7 +1,7 @@
 export default class PhoneViewer {
-  constructor({ element }) {
+  constructor({ element, onPhonesCatalog }) {
     this._element = element;
-
+    this._onPhonesCatalog = onPhonesCatalog;
   }
 
   hide() {
@@ -14,7 +14,58 @@ export default class PhoneViewer {
     this._phoneDetails = phoneDetails;
 
     this._render();
+
+    this._showLargeImage();
+
+    this._addToCart();
+
+    this._element.addEventListener('click', (event) => {
+      const onCatalogLink = event.target.closest('[class="link-come-back"]');
+      if (onCatalogLink) {
+        this._onPhonesCatalog();
+        console.log('Нажали Назад');
+      }
+    });
+
   }
+
+  _showLargeImage() {
+    let largeImg = document.querySelector('.phone');
+
+    let thumbs = document.querySelector('.phone-thumbs');
+
+    thumbs.addEventListener('click', (event) => {
+      let target = event.target;
+
+      if (target.nodeName === 'IMG') {
+        showThumbnail(target.src);
+        return false;
+      }
+
+    });
+
+    function showThumbnail(src) {
+      largeImg.src = src;
+    }
+  }
+
+  _addToCart() {
+    let phone = this._phoneDetails,
+        cart = document.querySelector('.shopping-cart ol'),
+        button = document.querySelector('.btn-mg');
+
+    button.addEventListener('click', (event) => {
+      let cartItem = document.createElement('li');
+      cartItem.innerHTML = `
+        <img src="${ phone.images[0] }">
+        ${ phone.name }
+        <button class="btn-remove">×</button>
+      `;
+
+      cart.prepend(cartItem);
+    });
+  }
+
   _render() {
     let phone = this._phoneDetails;
 
@@ -27,7 +78,7 @@ export default class PhoneViewer {
 
       <p>${ phone.description }</p>
 
-      <button class="btn btn-success">Add to cart</button>
+      <button class="btn btn-success btn-mg">Add to cart</button>
 
       <ul class="phone-thumbs">
         <li>
