@@ -1,17 +1,23 @@
 export default class ShoppingCart {
-  constructor({ element }) {
+  constructor({ element,addToCart }) {
     this._element = element;
+    this._addToCart = addToCart;
 
     this._render();
+    this._element.addEventListener('click',(event) => {
+      const removeBtn = event.target.closest('.remove-btn')
+      if(!removeBtn){
+        return;
+      }
+
+      removeBtn.parentNode.remove();
+    })
   }
 
   _render() {
     this._element.innerHTML = `
-      <p>Shopping Cart</p>
-      <ul>
-        <li>Phone 1</li>
-        <li>Phone 2</li>
-        <li>Phone 3</li>
+      <h3>Shopping Cart</h3>
+      <ul data-shoping-cart class="list-holder">
       </ul>
     `;
   }

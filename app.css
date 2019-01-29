@@ -105,3 +105,38 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+.list-holder:empty {
+  border: 0px;
+}
+.list-holder {
+  padding-left: 0px;
+  max-height: 150px;
+  border: 1px solid #000000;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.list-holder li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #000000;
+  padding: 5px;
+}
+.list-holder li:hover {
+  background: #cccccc;
+}
+.list-holder li:first-child {
+  border-top: 0px solid #000000;
+}
+.list-holder li:last-child {
+  border-bottom: 0px solid #000000;
+}
+.remove-btn {
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #b40400;
+}
+.remove-btn:hover {
+   color: #000;
+ }

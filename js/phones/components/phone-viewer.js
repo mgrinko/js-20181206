@@ -1,8 +1,7 @@
 export default class PhoneViewer {
-    constructor({element, onPhoneUnSelected, phoneId}) {
+    constructor({element, onPhoneUnSelected}) {
         this._element = element;
         this._onPhoneUnSelected = onPhoneUnSelected;
-        // this._phoneId = phoneId;
         this._element.addEventListener('click', (event) => {
             const phoneBack = event.target.closest('[data-element="back"]');
             if (!phoneBack) {
@@ -20,6 +19,15 @@ export default class PhoneViewer {
             }
             itemHolderSlider.src = itemSlider.src;
         });
+        this._element.addEventListener('click',(event) => {
+            const btnAddToCart = event.target.closest('[data-add-to-cart]');
+            const holderCart = document.querySelector('[data-shoping-cart]')
+            if(!btnAddToCart) {
+                return;
+            }
+            holderCart.innerHTML += `<li data-list-item="${this._phoneId}"> ${btnAddToCart.dataset.addToCart} <span class="glyphicon glyphicon-remove-circle remove-btn" ></span></li>`
+
+        });
 
     }
 
@@ -28,7 +36,6 @@ export default class PhoneViewer {
     }
 
     getCurrent(phoneId) {
-        console.log('viewer set', phoneId);
         return this._phoneId = phoneId;
     }
 
@@ -53,7 +60,7 @@ export default class PhoneViewer {
       <img class="phone" data-item-holder-slider="img" src="${phone.images[0]}">
 
       <button data-element="back">Back</button>
-      <button>Add to basket</button>
+      <button data-add-to-cart="${phone.name}">Add to basket</button>
   
   
       <h1>${phone.name}</h1>

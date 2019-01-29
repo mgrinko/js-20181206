@@ -18,7 +18,17 @@ export default class PhoneCatalog {
       const phoneElement = phoneLink.closest('[data-element="phone"]');
 
       this._onPhoneSelected(phoneElement.dataset.phoneId);
-      console.log('catalog holder',phoneElement.dataset.phoneId);
+
+    });
+    this._element.addEventListener('click',(event) => {
+      const btnAddToCart = event.target.closest('[data-add-to-cart]');
+      const holderCart = document.querySelector('[data-shoping-cart]');
+
+      if(!btnAddToCart) {
+        return;
+      }
+      const phoneId = btnAddToCart.parentNode.parentNode.dataset.phoneId;
+      holderCart.innerHTML += `<li data-list-item="${phoneId}"> ${btnAddToCart.dataset.phoneName} <span class="glyphicon glyphicon-remove-circle remove-btn" ></span></li>`
 
     });
   }
@@ -30,7 +40,6 @@ export default class PhoneCatalog {
   show() {
     this._element.hidden = false;
   }
-
 
   _render() {
     this._element.innerHTML = `
@@ -52,7 +61,7 @@ export default class PhoneCatalog {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a class="btn btn-success" data-add-to-cart data-phone-name="${ phone.name }">
                 Add
               </a>
             </div>
