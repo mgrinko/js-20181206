@@ -25,7 +25,7 @@ export default class ShoppingCart {
       <ul>
         ${Object.keys(this._goods).map(phoneId => `
           <li>${ this._goods[phoneId].name } <button data-remove-item="${phoneId}">-</button></li>
-        `)}
+        `).join('')}
       </ul>
     `;
   }
