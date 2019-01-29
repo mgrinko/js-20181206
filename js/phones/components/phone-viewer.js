@@ -1,7 +1,7 @@
 
 
 export default class PhoneViewer {
-  constructor({ element,onPhoneUnSelected,phoneId }) {
+  constructor({ element,onPhoneUnSelected, phoneId }) {
     this._element = element;
     this._onPhoneUnSelected = onPhoneUnSelected;
     this._phoneId = phoneId;
@@ -38,11 +38,12 @@ export default class PhoneViewer {
   }
   _render() {
 
-    console.log('phoneID',this._phoneId);
+    console.log('phoneID',this._element);
+
     let phone;
     for (let i = 0; i < this._phoneDetails.length; i++) {
       const element = this._phoneDetails[i];
-      if (element.id === this._phoneId) {
+      if (element.id === this._phoneId ) {
         phone =  element;
       }
     }
