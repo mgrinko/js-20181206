@@ -1,7 +1,7 @@
 /* app css stylesheet */
 
 body {
-  padding-top: 20px;
+  padding: 30px 5%;
   background-color: lightgoldenrodyellow;
 }
 
@@ -104,4 +104,18 @@ ul.specs dt {
 
 h1 {
   border-bottom: 1px solid gray;
+}
+
+.link-come-back {
+  background: none;
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.link-come-back::before {
+  content: '\2190';
+  font-size: 30px;
+  display: inline-block;
+  margin-right: 10px;
 }
