@@ -1,7 +1,8 @@
 export default class PhoneViewer {
-  constructor({ element, onClose }) {
+  constructor({ element, onClose, onAddToCart }) {
     this._element = element;
     this._onClose = onClose;
+    this._onAddToCart = onAddToCart;
 
   }
 
@@ -16,23 +17,40 @@ export default class PhoneViewer {
 
     this._render();
     this._mainImg = this._element.querySelector('[data-main-img]');
-    this._element.addEventListener('click', (e)=>{
-      const backBtn = e.target.closest('[data-back]');
+    this._element.addEventListener('click', (event)=>{
+      const backBtn = event.target.closest('[data-back]');
 
-      if(backBtn){
-        this.hide();
-        this._onClose();
+      if(!backBtn){
+       return;
       }
-      
-      const image = e.target.closest('[data-img-id]');
 
-      if(image){
-        const imgId = image.dataset.imgId;
-        this._mainImg.src = this._phoneDetails.images[imgId];
+      this.hide();
+      this._onClose();
+    })
+
+    this._element.addEventListener('click', (event)=>{
+      const image = event.target.closest('[data-img-id]');
+
+      if(!image){
+        return;
       }
+
+      const imgId = image.dataset.imgId;
+      this._mainImg.src = this._phoneDetails.images[imgId];
       
-    });
+    })
+
+    this._element.addEventListener('click', (event)=>{
+     
+      const addToCartBtn = event.target.closest('[data-add-item]');
+      if(!addToCartBtn){
+        return;
+      }
+      this._onAddToCart(this._phoneDetails);
+
+    })
   }
+  
   _render() {
     let phone = this._phoneDetails;
 
@@ -40,7 +58,7 @@ export default class PhoneViewer {
       <img data-main-img class="phone" src="${ phone.images[0] }">
 
       <button data-back>Back</button>
-      <button>Add to basket</button>
+      <button data-add-item>Add to basket</button>
   
   
       <h1>${ phone.name }</h1>

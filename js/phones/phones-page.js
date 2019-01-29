@@ -21,12 +21,18 @@ export default class PhonesPage {
         this._catalog.hide();
         this._viewer.show(phoneDetails);
       },
+      onAddToCart: (phone) => {
+        this._cart.addItem(phone);
+      },
     });
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
       onClose: () => {
         this._catalog.show();
+      },
+      onAddToCart: (phone) => {
+        this._cart.addItem(phone);
       }
     });
 
