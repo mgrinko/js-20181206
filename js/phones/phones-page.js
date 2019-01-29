@@ -7,11 +7,11 @@ import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
 export default class PhonesPage {
-  constructor({ element }) {
+  constructor({ element , phoneItemId}) {
     this._element = element;
-
+    this._phoneItemId = phoneItemId;
     this._render();
-
+    console.log('phoneItem', this._phoneItemId);
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
       phones: PhoneService.getAll(),
@@ -21,10 +21,25 @@ export default class PhonesPage {
         this._catalog.hide();
         this._viewer.show(phoneDetails);
       },
+
     });
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+      onPhoneUnSelected: (phoneId) => {
+        let phoneDetails = PhoneService.getById(phoneId);
+        this._catalog.show();
+        this._viewer.hide(phoneDetails);
+      },
+      phoneId: this._element.addEventListener('click',function (event) {
+        const thisElement = event.target.closest('[data-phone-id]').dataset.phoneId;
+
+        if(!thisElement) {
+          return;
+        }
+        console.log(thisElement);
+        return thisElement
+      })
     });
 
     this._cart = new ShoppingCart({
@@ -34,6 +49,7 @@ export default class PhonesPage {
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
     });
+
   }
 
   _render() {

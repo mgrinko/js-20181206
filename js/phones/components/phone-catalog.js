@@ -1,7 +1,7 @@
 'use strict';
 
 export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor({ element, phones, onPhoneSelected  }) {
     this._element = element;
     this._phones = phones;
     this._onPhoneSelected = onPhoneSelected;
@@ -18,6 +18,8 @@ export default class PhoneCatalog {
       const phoneElement = phoneLink.closest('[data-element="phone"]');
 
       this._onPhoneSelected(phoneElement.dataset.phoneId);
+      console.log('catalog holder',phoneElement.dataset.phoneId);
+
     });
   }
 

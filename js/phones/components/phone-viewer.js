@@ -1,6 +1,27 @@
+
+
 export default class PhoneViewer {
-  constructor({ element }) {
+  constructor({ element,onPhoneUnSelected,phoneId }) {
     this._element = element;
+    this._onPhoneUnSelected = onPhoneUnSelected;
+    this._phoneId = phoneId;
+    this._element.addEventListener('click', (event) => {
+      const phoneBack = event.target.closest('[data-element="back"]');
+      if (!phoneBack) {
+        return;
+      }
+      this._onPhoneUnSelected(phoneBack.dataset.phoneId);
+
+    });
+    this._element.addEventListener('click', (event) => {
+       const itemSlider = event.target.closest('[data-item-slider="img"]') ;
+       const itemHolderSlider = document.querySelector('[data-item-holder-slider="img"]') ;
+
+       if(!itemSlider) {
+           return;
+       }
+        itemHolderSlider.src = itemSlider.src;
+    });
 
   }
 
@@ -16,12 +37,20 @@ export default class PhoneViewer {
     this._render();
   }
   _render() {
-    let phone = this._phoneDetails;
+
+    console.log('phoneID',this._phoneId);
+    let phone;
+    for (let i = 0; i < this._phoneDetails.length; i++) {
+      const element = this._phoneDetails[i];
+      if (element.id === this._phoneId) {
+        phone =  element;
+      }
+    }
 
     this._element.innerHTML = `
-      <img class="phone" src="${ phone.images[0] }">
+      <img class="phone" data-item-holder-slider="img" src="${ phone.images[0] }">
 
-      <button>Back</button>
+      <button data-element="back">Back</button>
       <button>Add to basket</button>
   
   
@@ -30,24 +59,11 @@ export default class PhoneViewer {
       <p>${ phone.description }</p>
   
       <ul class="phone-thumbs">
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-        </li>
+      ${
+            phone.images.map(image => {
+                return '<li>' + ' <img data-item-slider="img"  src="' + image + '">' + '</li>'
+            }).join('')
+        }
       </ul>
     `;
   }
