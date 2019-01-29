@@ -15,16 +15,29 @@ export default class PhoneViewer {
     this._phoneDetails = phoneDetails;
 
     this._render();
-    this._element.querySelector('[data-back]').addEventListener('click', ()=>{
-      this.hide();
-      this._onClose();
+    this._mainImg = this._element.querySelector('[data-main-img]');
+    this._element.addEventListener('click', (e)=>{
+      const backBtn = e.target.closest('[data-back]');
+
+      if(backBtn){
+        this.hide();
+        this._onClose();
+      }
+      
+      const image = e.target.closest('[data-img-id]');
+
+      if(image){
+        const imgId = image.dataset.imgId;
+        this._mainImg.src = this._phoneDetails.images[imgId];
+      }
+      
     });
   }
   _render() {
     let phone = this._phoneDetails;
 
     this._element.innerHTML = `
-      <img class="phone" src="${ phone.images[0] }">
+      <img data-main-img class="phone" src="${ phone.images[0] }">
 
       <button data-back>Back</button>
       <button>Add to basket</button>
@@ -35,24 +48,11 @@ export default class PhoneViewer {
       <p>${ phone.description }</p>
   
       <ul class="phone-thumbs">
+      ${phone.images.map((photo, ind) => `
         <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+          <img data-img-id="${ind}" src="${photo}">
         </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-        </li>
+        `).join('')}
       </ul>
     `;
   }
