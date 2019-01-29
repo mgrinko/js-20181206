@@ -7,37 +7,63 @@ import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
 export default class PhonesPage {
-  constructor({ element }) {
-    this._element = element;
+    constructor({element}) {
+        this._element = element;
 
-    this._render();
+        this._render();
 
-    this._catalog = new PhoneCatalog({
-      element: this._element.querySelector('[data-component="phone-catalog"]'),
-      phones: PhoneService.getAll(),
-      onPhoneSelected: (phoneId) => {
-        let phoneDetails = PhoneService.getById(phoneId);
+        this._catalog = new PhoneCatalog({
+            element: this._element.querySelector('[data-component="phone-catalog"]'),
+            phones: PhoneService.getAll(),
+            onPhoneSelected: (phoneId) => {
+                let phoneDetails = PhoneService.getById(phoneId);
 
-        this._catalog.hide();
-        this._viewer.show(phoneDetails);
-      },
-    });
+                this._catalog.hide();
+                this._viewer.show(phoneDetails);
+            },
 
-    this._viewer = new PhoneViewer({
-      element: this._element.querySelector('[data-component="phone-viewer"]'),
-    });
+            addToCart: (phoneName, i) => {
+                let shoppingCartList = this._element.querySelector('[data-element="cart-list"]');
 
-    this._cart = new ShoppingCart({
-      element: this._element.querySelector('[data-component="shopping-cart"]'),
-    });
+                shoppingCartList.innerHTML += `
+            <li>
+                <span class="item-name">${ phoneName } ${i}</span>
+                <span class="remove-btn">X</span>
+            </li>
+            `
+            }
+        });
 
-    this._filter = new Filter({
-      element: this._element.querySelector('[data-component="filter"]'),
-    });
-  }
+        this._viewer = new PhoneViewer({
+            element: this._element.querySelector('[data-component="phone-viewer"]'),
+            phones: PhoneService.getById(),
+            onClickBackButton: () => {
+                this._catalog.show();
+            },
+            addToCart: (phoneName, i) => {
 
-  _render() {
-    this._element.innerHTML = `
+                let shoppingCartList = this._element.querySelector('[data-element="cart-list"]');
+
+                shoppingCartList.innerHTML += `
+            <li>
+                <span class="item-name">${ phoneName } ${i}</span>
+                <span class="remove-btn">X</span>
+            </li>
+            `
+            }
+        });
+
+        this._cart = new ShoppingCart({
+            element: this._element.querySelector('[data-component="shopping-cart"]'),
+        });
+
+        this._filter = new Filter({
+            element: this._element.querySelector('[data-component="filter"]'),
+        });
+    }
+
+    _render() {
+        this._element.innerHTML = `
       <div class="row">
     
         <!--Sidebar-->
@@ -58,5 +84,5 @@ export default class PhonesPage {
         </div>
       </div>
     `;
-  }
+    }
 }
