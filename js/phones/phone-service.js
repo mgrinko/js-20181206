@@ -228,7 +228,22 @@ const PhoneService = {
   },
 
   getById(phoneId) {
-    return phoneDetails;
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET", `http://localhost:63342/js-20181206/phones/${phoneId}.json`, true)
+      xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      xhr.onreadystatechange = function() {
+        if (this.readyState != 4) return;
+
+        if (xhr.status != 200) {
+          reject(xhr.status + ': ' + xhr.statusText);
+        } else {
+          resolve(JSON.parse(this.responseText));
+        }
+      }
+
+      xhr.send();
+    });
   },
 };
 

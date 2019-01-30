@@ -15,12 +15,15 @@ export default class PhonesPage {
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
       phones: PhoneService.getAll(),
-      onPhoneSelected: (phoneId) => {
-        let phoneDetails = PhoneService.getById(phoneId);
+      onPhoneSelected: async (phoneId) => {
+        let phoneDetails = await PhoneService.getById(phoneId);
 
         this._catalog.hide();
         this._viewer.show(phoneDetails);
       },
+      addPhoneToCart: (opts) => {
+        this._cart.add(opts);
+      }
     });
 
     this._viewer = new PhoneViewer({
@@ -28,7 +31,10 @@ export default class PhonesPage {
         backToCatalog: () => {
           this._viewer.hide();
           this._catalog.show();
-        }
+        },
+      addToCart: (opts) => {
+        this._cart.add(opts);
+      }
     });
 
     this._cart = new ShoppingCart({
@@ -37,6 +43,12 @@ export default class PhonesPage {
 
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
+      onSearch: (query) => {
+        this._catalog.filterBy(query);
+      },
+      onSort: (param) => {
+        this._catalog.sortBy(param);
+      }
     });
   }
 
