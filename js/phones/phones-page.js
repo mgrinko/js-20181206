@@ -7,7 +7,7 @@ import PhoneService from './phone-service.js';
 
 export default class PhonesPage extends BaseComponent{
   constructor({ element }) {
-    super({ element })
+    super({ element });
 
     this._render();
 
@@ -23,6 +23,7 @@ export default class PhonesPage extends BaseComponent{
       onAddToCart: (phone) => {
         this._cart.addItem(phone);
       },
+      
     });
 
     this._viewer = new PhoneViewer({
@@ -41,6 +42,21 @@ export default class PhonesPage extends BaseComponent{
 
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
+
+      onSort: (sortFn) => {
+        this._catalog._phones.sort(sortFn);
+        this._catalog._render();
+      },
+
+      onSearch: (matchString) => {
+        let phonesList = PhoneService.getAll();
+        if(matchString !== ''){
+          this._catalog._phones = phonesList.filter(phone => phone.name.toLocaleLowerCase().includes(matchString.toLowerCase()));
+        } else {
+          this._catalog._phones = phonesList;
+        }
+        this._catalog._render();
+      },
     });
   }
 
