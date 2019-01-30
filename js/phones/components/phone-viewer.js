@@ -1,17 +1,15 @@
-export default class PhoneViewer {
+import BaseComponent from './base-component.js';
+
+export default class PhoneViewer extends BaseComponent {
   constructor({ element, onClose, onAddToCart }) {
-    this._element = element;
+    super({ element });
     this._onClose = onClose;
     this._onAddToCart = onAddToCart;
 
   }
 
-  hide() {
-    this._element.hidden = true;
-  }
-
   show(phoneDetails) {
-    this._element.hidden = false;
+    super.show();
 
     this._phoneDetails = phoneDetails;
 

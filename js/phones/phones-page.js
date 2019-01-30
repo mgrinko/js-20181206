@@ -1,14 +1,13 @@
-'use strict';
-
 import PhoneCatalog from './components/phone-catalog.js';
+import BaseComponent from './components/base-component.js';
 import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
-export default class PhonesPage {
+export default class PhonesPage extends BaseComponent{
   constructor({ element }) {
-    this._element = element;
+    super({ element })
 
     this._render();
 

@@ -1,6 +1,8 @@
-export default class ShoppingCart {
+import BaseComponent from './base-component.js';
+
+export default class ShoppingCart extends BaseComponent {
   constructor({ element }) {
-    this._element = element;
+    super({ element })
     this._goods = {};
     this._render();
     this._element.addEventListener('click', (event) => {

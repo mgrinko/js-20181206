@@ -1,6 +1,8 @@
-export default class Filter {
+import BaseComponent from './base-component.js';
+
+export default class Filter extends BaseComponent {
   constructor({ element }) {
-    this._element = element;
+    super({ element })
 
     this._render();
   }

@@ -1,8 +1,8 @@
-'use strict';
+import BaseComponent from './base-component.js';
 
-export default class PhoneCatalog {
+export default class PhoneCatalog extends BaseComponent {
   constructor({ element, phones, onPhoneSelected, onAddToCart }) {
-    this._element = element;
+    super({ element });
     this._phones = phones;
     this._onPhoneSelected = onPhoneSelected;
     this._onAddToCart = onAddToCart;
@@ -32,14 +32,6 @@ export default class PhoneCatalog {
       const phone = this._phones.find(el => el.id === phoneId);
       this._onAddToCart(phone);
     });
-  }
-
-  hide() {
-    this._element.hidden = true;
-  }
-
-  show() {
-    this._element.hidden = false;
   }
 
   _render() {
