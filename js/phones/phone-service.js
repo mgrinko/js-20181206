@@ -227,8 +227,30 @@ const PhoneService = {
     return phonesFromServer;
   },
 
-  getById(phoneId) {
-    return phoneDetails;
+  async getById(phoneId) {
+    const resp = await fetch(`/js-20181206/phones/${phoneId}.json`);
+    const json = await resp.json();
+      console.log(json);
+      return json;
+    //   return new Promise((resolve, reject) => {
+    //   let xhr = new XMLHttpRequest();
+    //   let url = `/js-20181206/phones/${phoneId}.json`;
+    //
+    //   xhr.open("GET", url, true)
+    //   xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    //   xhr.onreadystatechange = function() {
+    //     if (this.readyState != 4) return;
+    //
+    //     if (xhr.status != 200) {
+    //       reject(xhr.status + ': ' + xhr.statusText);
+    //     } else {
+    //         console.log(this.responseText);
+    //         resolve(JSON.parse(this.responseText));
+    //     }
+    //   }
+    //
+    //   xhr.send();
+    // });
   },
 };
 
