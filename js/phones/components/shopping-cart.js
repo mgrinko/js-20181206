@@ -30,7 +30,7 @@ export default class ShoppingCart {
       <ul>
         ${this._phones.map(phone => `
           <li>${phone.name} <button data-element="remove-from-cart" data-phone="${phone.id}">remove</button></li>
-        `)}
+        `).join('')}
       </ul>
     `;
   }

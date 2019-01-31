@@ -7,8 +7,10 @@ export default class PhoneViewer {
     this._element.addEventListener('click', (event) => {
       const backLink = event.target.closest('[data-element="back-link"');
       const cartLink = event.target.closest('[data-element=add-to-cart]');
+      const imageLink = event.target.closest('[data-element=image]');
       this._backToCatalog(backLink);
       this._addToCart(cartLink);
+      this._selectImage(imageLink);
     })
   }
 
@@ -20,7 +22,15 @@ export default class PhoneViewer {
     this._element.hidden = false;
 
     this._phoneDetails = phoneDetails;
+    this._selectedImage = phoneDetails.images[0];
 
+    this._render();
+  }
+
+  _selectImage(imageLink) {
+    if (!imageLink) return;
+    const imageIndex = imageLink.dataset.imageIndex;
+    this._selectedImage = this._phoneDetails.images[imageIndex];
     this._render();
   }
 
@@ -38,7 +48,7 @@ export default class PhoneViewer {
     let phone = this._phoneDetails;
 
     this._element.innerHTML = `
-      <img class="phone" src="${ phone.images[0] }">
+      <img class="phone" src="${ this._selectedImage}">
 
       <button data-element="back-link">Back</button>
       <button data-element="add-to-cart">Add to basket</button>
@@ -48,24 +58,11 @@ export default class PhoneViewer {
       <p>${ phone.description }</p>
   
       <ul class="phone-thumbs">
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-        </li>
+        ${phone.images.map((image, index) => `
+          <li data-element="image" data-image-index="${index}">
+            <img src="${image}">
+          </li>
+        `).join('')}
       </ul>
     `;
   }
