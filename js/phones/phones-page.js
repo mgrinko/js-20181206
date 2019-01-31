@@ -21,10 +21,20 @@ export default class PhonesPage {
         this._catalog.hide();
         this._viewer.show(phoneDetails);
       },
+      onPhoneAddCart: (phoneName) => {
+        this._cart.add(phoneName);
+      },
     });
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+      onDetailBack: () => {
+        this._catalog.show();
+        this._viewer.hide();
+      },
+      onDetailAddCart: (phoneName) => {
+        this._cart.add(phoneName);
+      },
     });
 
     this._cart = new ShoppingCart({
@@ -35,6 +45,7 @@ export default class PhonesPage {
       element: this._element.querySelector('[data-component="filter"]'),
     });
   }
+
 
   _render() {
     this._element.innerHTML = `

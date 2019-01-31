@@ -1,23 +1,27 @@
 'use strict';
 
 export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor({ element, phones, onPhoneSelected, onPhoneAddCart }) {
     this._element = element;
     this._phones = phones;
     this._onPhoneSelected = onPhoneSelected;
+    this._onPhoneAddCart = onPhoneAddCart;
 
     this._render();
 
     this._element.addEventListener('click', (event) => {
-      const phoneLink = event.target.closest('[data-element="phone-link"]');
+      const phoneLink = event.target.closest('[data-element]');
+      const phoneElement = phoneLink.closest('[data-element="phone"]');
+      const elType = phoneLink.dataset.element;
 
-      if (!phoneLink) {
+      if (elType === 'phone-link') {
+        this._onPhoneSelected(phoneElement.dataset.phoneId);
+      } else if (elType === 'add-cart') {
+        this._onPhoneAddCart(phoneElement.dataset.phoneName);
+      } else {
         return;
       }
 
-      const phoneElement = phoneLink.closest('[data-element="phone"]');
-
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
     });
   }
 
@@ -38,6 +42,7 @@ export default class PhoneCatalog {
           <li
             data-element="phone"
             data-phone-id="${ phone.id }"
+            data-phone-name="${ phone.name }"
             class="thumbnail"
           >
             <a
@@ -49,7 +54,7 @@ export default class PhoneCatalog {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a class="btn btn-success" data-element="add-cart">
                 Add
               </a>
             </div>

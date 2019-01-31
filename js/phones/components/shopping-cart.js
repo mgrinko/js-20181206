@@ -5,6 +5,17 @@ export default class ShoppingCart {
     this._render();
   }
 
+  add(phoneName) {
+    console.log(phoneName);
+
+    const listProducts = this._element.querySelector('ul');
+    const newLi = document.createElement('li');
+
+    newLi.innerHTML = phoneName;
+
+    listProducts.appendChild(newLi);
+  }
+
   _render() {
     this._element.innerHTML = `
       <p>Shopping Cart</p>
