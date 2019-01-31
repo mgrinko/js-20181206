@@ -1,10 +1,11 @@
-'use strict';
+import BaseComponent from './base-component.js';
 
-export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected }) {
-    this._element = element;
+export default class PhoneCatalog extends BaseComponent {
+  constructor({ element, phones, onPhoneSelected, onAddToCart }) {
+    super({ element });
     this._phones = phones;
     this._onPhoneSelected = onPhoneSelected;
+    this._onAddToCart = onAddToCart;
 
     this._render();
 
@@ -19,14 +20,30 @@ export default class PhoneCatalog {
 
       this._onPhoneSelected(phoneElement.dataset.phoneId);
     });
+
+    this._element.addEventListener('click', (event) => {
+      const byBtn = event.target.closest('[data-add-item]');
+
+      if (!byBtn) {
+        return;
+      }
+
+      const phoneId = byBtn.dataset.addItem;
+      const phone = this._phones.find(el => el.id === phoneId);
+      this._onAddToCart(phone);
+    });
   }
 
-  hide() {
-    this._element.hidden = true;
+  updateView(){
+    this._render();
   }
 
-  show() {
-    this._element.hidden = false;
+  setPhones(newPhones){
+    this._phones = newPhones;
+  }
+
+  getPhones(){
+    return this._phones;
   }
 
   _render() {
@@ -49,7 +66,7 @@ export default class PhoneCatalog {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a data-add-item="${phone.id}" class="btn btn-success">
                 Add
               </a>
             </div>

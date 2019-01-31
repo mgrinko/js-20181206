@@ -1,14 +1,13 @@
-'use strict';
-
 import PhoneCatalog from './components/phone-catalog.js';
+import BaseComponent from './components/base-component.js';
 import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
-export default class PhonesPage {
+export default class PhonesPage extends BaseComponent{
   constructor({ element }) {
-    this._element = element;
+    super({ element });
 
     this._render();
 
@@ -21,10 +20,20 @@ export default class PhonesPage {
         this._catalog.hide();
         this._viewer.show(phoneDetails);
       },
+      onAddToCart: (phone) => {
+        this._cart.addItem(phone);
+      },
+      
     });
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+      onClose: () => {
+        this._catalog.show();
+      },
+      onAddToCart: (phone) => {
+        this._cart.addItem(phone);
+      }
     });
 
     this._cart = new ShoppingCart({
@@ -33,6 +42,22 @@ export default class PhonesPage {
 
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
+
+      onSort: (sortFn) => {
+        this._catalog.getPhones().sort(sortFn);
+        this._catalog.updateView();
+      },
+
+      onSearch: (matchString) => {
+        let phonesList = PhoneService.getAll();
+        if(matchString !== ''){
+          let newPhones = phonesList.filter(phone => phone.name.toLocaleLowerCase().includes(matchString.toLowerCase()));
+          this._catalog.setPhones(newPhones);
+        } else {
+          this._catalog.setPhones(phonesList);
+        }
+        this._catalog.updateView();
+      },
     });
   }
 

@@ -1,28 +1,62 @@
-export default class PhoneViewer {
-  constructor({ element }) {
-    this._element = element;
+import BaseComponent from './base-component.js';
 
-  }
+export default class PhoneViewer extends BaseComponent {
+  constructor({ element, onClose, onAddToCart }) {
+    super({ element });
+    this._onClose = onClose;
+    this._onAddToCart = onAddToCart;
 
-  hide() {
-    this._element.hidden = true;
   }
 
   show(phoneDetails) {
-    this._element.hidden = false;
+    super.show();
 
     this._phoneDetails = phoneDetails;
 
     this._render();
+    this._mainImg = this._element.querySelector('[data-main-img]');
+    this._element.addEventListener('click', (event)=>{
+      const backBtn = event.target.closest('[data-back]');
+
+      if(!backBtn){
+       return;
+      }
+
+      this.hide();
+      this._onClose();
+    })
+
+    this._element.addEventListener('click', (event)=>{
+      const image = event.target.closest('[data-img-id]');
+
+      if(!image){
+        return;
+      }
+
+      const imgId = image.dataset.imgId;
+      this._mainImg.src = this._phoneDetails.images[imgId];
+      
+    })
+
+    this._element.addEventListener('click', (event)=>{
+     
+      const addToCartBtn = event.target.closest('[data-add-item]');
+      if(!addToCartBtn){
+        return;
+      }
+      this._onAddToCart(this._phoneDetails);
+
+    })
   }
+  
   _render() {
     let phone = this._phoneDetails;
 
     this._element.innerHTML = `
-      <img class="phone" src="${ phone.images[0] }">
+      <img data-main-img class="phone" src="${ phone.images[0] }">
 
-      <button>Back</button>
-      <button>Add to basket</button>
+      <button data-back>Back</button>
+      <button data-add-item>Add to basket</button>
   
   
       <h1>${ phone.name }</h1>
@@ -30,24 +64,11 @@ export default class PhoneViewer {
       <p>${ phone.description }</p>
   
       <ul class="phone-thumbs">
+      ${phone.images.map((photo, ind) => `
         <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+          <img data-img-id="${ind}" src="${photo}">
         </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-        </li>
+        `).join('')}
       </ul>
     `;
   }

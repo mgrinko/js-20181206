@@ -1,17 +1,33 @@
-export default class ShoppingCart {
-  constructor({ element }) {
-    this._element = element;
+import BaseComponent from './base-component.js';
 
+export default class ShoppingCart extends BaseComponent {
+  constructor({ element }) {
+    super({ element })
+    this._goods = {};
+    this._render();
+    this._element.addEventListener('click', (event) => {
+      const delBtn = event.target.closest('[data-remove-item]');
+      if(delBtn){
+        const phoneId = delBtn.dataset.removeItem;
+        this.removeItem(phoneId);
+      }
+    });
+  }
+  addItem(phone){
+    this._goods[phone.id] = phone;
     this._render();
   }
-
+  removeItem(id){
+    delete this._goods[id];
+    this._render();
+  }
   _render() {
     this._element.innerHTML = `
       <p>Shopping Cart</p>
       <ul>
-        <li>Phone 1</li>
-        <li>Phone 2</li>
-        <li>Phone 3</li>
+        ${Object.keys(this._goods).map(phoneId => `
+          <li>${ this._goods[phoneId].name } <button data-remove-item="${phoneId}">-</button></li>
+        `).join('')}
       </ul>
     `;
   }
