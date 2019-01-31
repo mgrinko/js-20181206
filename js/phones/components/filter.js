@@ -1,5 +1,8 @@
-export default class Filter {
+import Components from './components.js';
+
+export default class Filter extends Components{
   constructor({ element, onSort }) {
+      super();
       this._element = element;
       this._onSort = onSort;
 
@@ -9,8 +12,8 @@ export default class Filter {
       this._sortableOptions = this._element.querySelector('.js-sortable_options');
 
 
-      this._searchInput.addEventListener('input', this.debounce(this._onSort, 300));
-      this._sortableOptions.addEventListener('change', this._onSort);
+      this._searchInput.addEventListener('input', this._debounce(this._onSort, 300));
+      this._sortableOptions.addEventListener('input', this._onSort);
 
   }
 
@@ -31,14 +34,4 @@ export default class Filter {
     `;
   }
 
-  debounce(f, delay){
-      let timer = null;
-
-      return function(...args){
-          //при повторном запуске очищаем и запускаем таймер по новой
-          clearTimeout(timer);
-          timer = setTimeout(f.bind(this, ...args),delay);
-
-      }
-  }
 }

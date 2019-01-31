@@ -9,4 +9,3 @@ let currentPage = new PhonesPage({
 });
 
 
-console.log(PhonesPage.prototype);

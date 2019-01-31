@@ -7,9 +7,6 @@ import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
-
-
-
 export default class PhonesPage extends Components{
 
   constructor({ element }) {
