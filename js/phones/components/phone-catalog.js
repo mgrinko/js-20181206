@@ -21,15 +21,19 @@ export default class PhoneCatalog {
     });
   }
 
-  hide() {
-    this._element.hidden = true;
-  }
-
-  show() {
-    this._element.hidden = false;
-  }
 
   _render() {
+
+    if(!this._phones.length){
+      this._element.innerHTML = `
+        <ul class="phones">
+          <li><h2>Ничего не нашлось</h2></li>
+        </ul>
+      `;
+
+      return;
+    }
+
     this._element.innerHTML = `
       <ul class="phones">
       
@@ -49,7 +53,11 @@ export default class PhoneCatalog {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a 
+                class="btn btn-success js-addInCart" 
+                data-id="${ phone.id }"
+                data-name="${ phone.name }"
+              >
                 Add
               </a>
             </div>

@@ -1,13 +1,17 @@
 'use strict';
 
+import Components from './components/components.js';
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
-export default class PhonesPage {
+export default class PhonesPage extends Components{
+
   constructor({ element }) {
+    super();
+
     this._element = element;
 
     this._render();
@@ -18,13 +22,21 @@ export default class PhonesPage {
       onPhoneSelected: (phoneId) => {
         let phoneDetails = PhoneService.getById(phoneId);
 
-        this._catalog.hide();
-        this._viewer.show(phoneDetails);
+        this._show(this._viewer._element,()=>{
+            this._viewer._phoneDetails = phoneDetails;
+            this._viewer._render();
+        });
+        this._hide(this._catalog._element);
+
       },
     });
 
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+      onBackCatalog: () => {
+          this._show(this._catalog._element,);
+          this._hide(this._viewer._element);
+      },
     });
 
     this._cart = new ShoppingCart({
@@ -33,6 +45,36 @@ export default class PhonesPage {
 
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
+      onSort:()=>{
+          const valueSearch = this._filter._searchInput.value.toLowerCase();
+          const valueSort = this._filter._sortableOptions.value;
+          let phonesList = PhoneService.getAll();
+
+          //фильтрация
+          phonesList = phonesList.filter((phone)=>{
+              let namePhone = phone.name.toLowerCase();
+              return namePhone.includes(valueSearch);
+          });
+
+          //сортировка
+          phonesList.sort((a,b)=>{
+            let valA = a[valueSort];
+            let valB = b[valueSort];
+            if(valueSort==='name'){
+                valA.toLowerCase();
+                valB.toLowerCase();
+            }
+
+            if (valA < valB) return -1;//сортируем строки по возрастанию
+            if (valA > valB) return 1;
+            return 0;
+
+          });
+
+          this._catalog._phones = phonesList;
+          this._catalog._render();
+
+      }
     });
   }
 
