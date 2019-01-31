@@ -5,12 +5,12 @@ export default class Filter {
 
       this._render();
 
-      this._search_input = this._element.querySelector('.js-search_input');
-      this._sortable_options = this._element.querySelector('.js-sortable_options');
+      this._searchInput = this._element.querySelector('.js-search_input');
+      this._sortableOptions = this._element.querySelector('.js-sortable_options');
 
 
-      this._search_input.addEventListener('input', this.debounce(this._onSort, 300));
-      this._sortable_options.addEventListener('change', this._onSort);
+      this._searchInput.addEventListener('input', this.debounce(this._onSort, 300));
+      this._sortableOptions.addEventListener('change', this._onSort);
 
   }
 
@@ -34,13 +34,10 @@ export default class Filter {
   debounce(f, delay){
       let timer = null;
 
-
       return function(...args){
           //при повторном запуске очищаем и запускаем таймер по новой
           clearTimeout(timer);
-          timer = setTimeout(()=>{
-              f.apply(this,args);
-          },delay);
+          timer = setTimeout(f.bind(this, ...args),delay);
 
       }
   }

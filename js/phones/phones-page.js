@@ -49,8 +49,8 @@ export default class PhonesPage extends Components{
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
       onSort:()=>{
-          const valueSearch = this._filter._search_input.value.toLowerCase();
-          const valueSort = this._filter._sortable_options.value;
+          const valueSearch = this._filter._searchInput.value.toLowerCase();
+          const valueSort = this._filter._sortableOptions.value;
           let phonesList = PhoneService.getAll();
 
           //фильтрация
@@ -68,9 +68,10 @@ export default class PhonesPage extends Components{
                 valB.toLowerCase();
             }
 
-              if (valA < valB) return -1;//сортируем строки по возрастанию
-              if (valA > valB) return 1;
-              return 0;
+            if (valA < valB) return -1;//сортируем строки по возрастанию
+            if (valA > valB) return 1;
+            return 0;
+
           });
 
           this._catalog._phones = phonesList;

@@ -11,7 +11,7 @@ export default class ShoppingCart {
 
         if (!addButton) return;
 
-        this._addInCart(addButton.dataset.name);
+        this._addTo(addButton.dataset.name);
     });
 
     //удаление
@@ -20,17 +20,17 @@ export default class ShoppingCart {
 
         if (!delButton) return;
 
-        this._delInCart(delButton.dataset.key);
+        this._removeFrom(delButton.dataset.key);
     });
   }
 
-  _addInCart(itemTitle) {
+  _addTo(itemTitle) {
       this._addedItems.push(itemTitle);
 
       this._render();
   }
 
-  _delInCart(id) {
+  _removeFrom(id) {
       this._addedItems.splice(id,1);
 
       this._render();

@@ -7,12 +7,12 @@ export default class PhoneViewer {
 
     //галерея
     this._element.addEventListener('click', (event) => {
-        const preview_image = event.target.closest('.js-preview_item_images img');
+        const previewImage = event.target.closest('.js-preview_item_image');
 
-        if (!preview_image) return;
+        if (!previewImage) return;
 
-        const view_image = this._element.querySelector('.js-view_item_image');
-        view_image.src = preview_image.src;
+        const viewImage = this._element.querySelector('.js-view_item_image');
+        viewImage.src = previewImage.src;
     });
 
     //назад
@@ -46,21 +46,21 @@ export default class PhoneViewer {
   
       <p>${ phone.description }</p>
   
-      <ul class="phone-thumbs js-preview_item_images">
+      <ul class="phone-thumbs">
         <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
         </li>
         <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
+          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
         </li>
         <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
+          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
         </li>
         <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
+          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
         </li>
         <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
+          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
         </li>
         <li>
           <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
