@@ -24,7 +24,7 @@ export default class Filter {
     `;
   }
   _initEventHandlers() {
-    const search = debouce((e) => {
+    const search = debounce((e) => {
       if (e.target.closest('[name="search"]')) {
         this._onSearch(e.target.closest('[name="search"]').value);
       }
@@ -38,7 +38,6 @@ export default class Filter {
       }
     });
   }
-
 }
 
 function debounce(f, delay) {

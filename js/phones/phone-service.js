@@ -233,7 +233,7 @@ const PhoneService = {
       let url = location.href.includes('localhost')
         ? `http://localhost:63342/js-20181206/phones/${phoneId}.json`
         : `/phones/${phoneId}.json`;
-      
+
       xhr.open("GET", url, true)
       xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
       xhr.onreadystatechange = function() {
