@@ -24,15 +24,6 @@ export default class Filter {
     `;
   }
   _initEventHandlers() {
-    function debounce(f, delay) {
-      let timer = null;
-      return function wrapper(...args) {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(function() {
-          return f.apply(this, args);
-        }, delay);
-      }
-    }
     const search = debounce((e) => {
       if (e.target.closest('[name="search"]')) {
         this._onSearch(e.target.closest('[name="search"]').value);
@@ -49,4 +40,12 @@ export default class Filter {
   }
 }
 
-
+function debounce(f, delay) {
+  let timer = null;
+  return function wrapper(...args) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function() {
+      return f.apply(this, args);
+    }, delay);
+  }
+}
