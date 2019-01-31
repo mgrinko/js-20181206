@@ -10,19 +10,25 @@ export default class PhoneCatalog {
     this._render();
 
     this._element.addEventListener('click', (event) => {
-      const phoneLink = event.target.closest('[data-element="phone-link"]');
-
-      if (phoneLink) {
-        const phoneElement = phoneLink.closest('[data-element="phone"]');
-        this._onPhoneSelected(phoneElement.dataset.phoneId);
-      }
-
-      const addButton = event.target.closest('[data-element="buy-button"]');
-      if(addButton){
-        const phoneElement = addButton.closest('[data-element="phone"]');
-        this._onAddToBasket(phoneElement.dataset.phoneId);
-      }
+      this._showPhoneDetails();
+      this._addPhoneToBasket();
     });
+  }
+
+  _showPhoneDetails(){
+    const phoneLink = event.target.closest('[data-element="phone-link"]');
+    if (phoneLink) {
+      const phoneElement = phoneLink.closest('[data-element="phone"]');
+      this._onPhoneSelected(phoneElement.dataset.phoneId);
+    }
+  }
+
+  _addPhoneToBasket(){
+    const addButton = event.target.closest('[data-element="buy-button"]');
+    if(addButton){
+      const phoneElement = addButton.closest('[data-element="phone"]');
+      this._onAddToBasket(phoneElement.dataset.phoneId);
+    }
   }
 
   hide() {

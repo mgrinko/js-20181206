@@ -15,9 +15,8 @@ export default class PhoneViewer {
 
       const imgClicked = event.target.closest('[data-img-index]');
       if(imgClicked){
-        const index = imgClicked.dataset.imgIndex;
         const mainImage = this._element.querySelector('[data-element="img"]');
-        mainImage.src = this._phoneDetails.images[index];
+        mainImage.src = imgClicked.src;
       }
 
     });
