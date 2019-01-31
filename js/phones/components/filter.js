@@ -1,10 +1,11 @@
 import BaseComponent from './base-component.js';
+import Helper from './../../helper.js';
 
 export default class Filter extends BaseComponent {
   constructor({ element, onSort, onSearch }) {
     super({ element })
     this._onSort = onSort;
-    this._onSearch = onSearch;
+    this._onSearch = Helper.debounce(onSearch, 300);
     this._render();
     this._sorts = {
       name : (phone1, phone2) => phone1.name < phone2.name ? -1 : 1,

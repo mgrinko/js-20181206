@@ -44,18 +44,19 @@ export default class PhonesPage extends BaseComponent{
       element: this._element.querySelector('[data-component="filter"]'),
 
       onSort: (sortFn) => {
-        this._catalog._phones.sort(sortFn);
-        this._catalog._render();
+        this._catalog.getPhones().sort(sortFn);
+        this._catalog.updateView();
       },
 
       onSearch: (matchString) => {
         let phonesList = PhoneService.getAll();
         if(matchString !== ''){
-          this._catalog._phones = phonesList.filter(phone => phone.name.toLocaleLowerCase().includes(matchString.toLowerCase()));
+          let newPhones = phonesList.filter(phone => phone.name.toLocaleLowerCase().includes(matchString.toLowerCase()));
+          this._catalog.setPhones(newPhones);
         } else {
-          this._catalog._phones = phonesList;
+          this._catalog.setPhones(phonesList);
         }
-        this._catalog._render();
+        this._catalog.updateView();
       },
     });
   }

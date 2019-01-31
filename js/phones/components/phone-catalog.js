@@ -34,6 +34,18 @@ export default class PhoneCatalog extends BaseComponent {
     });
   }
 
+  updateView(){
+    this._render();
+  }
+
+  setPhones(newPhones){
+    this._phones = newPhones;
+  }
+
+  getPhones(){
+    return this._phones;
+  }
+
   _render() {
     this._element.innerHTML = `
       <ul class="phones">
