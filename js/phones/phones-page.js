@@ -15,6 +15,12 @@ export default class PhonePages {
         this._catalog = new PhonesCatalog({
             element: this._element.querySelector('[data-component="phones-catalog"]'),
             phones: PhoneServices.getAll(),
+            onPhoneSelected: (phoneId) => {
+                const phoneDetails = PhoneServices.getById(phoneId);
+
+                this._catalog.hide();
+                this._viwer.show(phoneDetails);
+            },
         });
 
         this._cart = new ShoppingCart({
