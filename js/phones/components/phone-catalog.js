@@ -1,24 +1,32 @@
 'use strict';
 
 export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor({ element, phones, onPhoneSelected, addToCart}) {
     this._element = element;
     this._phones = phones;
     this._onPhoneSelected = onPhoneSelected;
+    this._addToCartCallback = addToCart;
 
     this._render();
 
     this._element.addEventListener('click', (event) => {
       const phoneLink = event.target.closest('[data-element="phone-link"]');
-
-      if (!phoneLink) {
-        return;
-      }
-
-      const phoneElement = phoneLink.closest('[data-element="phone"]');
-
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
+      const addToCartButton = event.target.closest('[data-element="add-to-cart"]');
+      this._openPhone(phoneLink);
+      this._addToCart(addToCartButton);
     });
+  }
+
+  _openPhone(phoneLink) {
+    if (!phoneLink) return;
+    const phoneElement = phoneLink.closest('[data-element="phone"]');
+    this._onPhoneSelected(phoneElement.dataset.phoneId);
+  }
+
+  _addToCart(addToCartButton) {
+    if (!addToCartButton) return;
+    const phoneElement = addToCartButton.closest('[data-element="phone"]');
+    this._addToCartCallback(phoneElement.dataset.phoneId);
   }
 
   hide() {
@@ -49,7 +57,7 @@ export default class PhoneCatalog {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a data-element="add-to-cart" class="btn btn-success">
                 Add
               </a>
             </div>

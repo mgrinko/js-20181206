@@ -21,8 +21,9 @@ export default class PhonesPage {
         this._catalog.hide();
         this._viewer.show(phoneDetails);
       },
-      addToCart: () => {
-
+      addToCart: (phoneId) => {
+        const phone = this._catalog._phones.find(phone => phone.id === phoneId);
+        this._cart.add(phone);
       }
     });
 
