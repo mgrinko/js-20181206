@@ -1,7 +1,15 @@
 export default class PhoneViewer {
-  constructor({ element }) {
+  constructor({ element, backToCatalog, addToCart}) {
     this._element = element;
+    this._backToCatalogCallback = backToCatalog;
+    this._addToCartCallback = addToCart;
 
+    this._element.addEventListener('click', (event) => {
+      const backLink = event.target.closest('[data-element="back-link"');
+      const cartLink = event.target.closest('[data-element=add-to-cart]');
+      this._backToCatalog(backLink);
+      this._addToCart(cartLink);
+    })
   }
 
   hide() {
@@ -15,15 +23,25 @@ export default class PhoneViewer {
 
     this._render();
   }
+
+  _backToCatalog(backLink) {
+    if (!backLink) return;
+    this._backToCatalogCallback();
+  }
+
+  _addToCart(cartLink) {
+    if (!cartLink) return;
+    this._addToCartCallback(this._phoneDetails);
+  }
+
   _render() {
     let phone = this._phoneDetails;
 
     this._element.innerHTML = `
       <img class="phone" src="${ phone.images[0] }">
 
-      <button>Back</button>
-      <button>Add to basket</button>
-  
+      <button data-element="back-link">Back</button>
+      <button data-element="add-to-cart">Add to basket</button>
   
       <h1>${ phone.name }</h1>
   
