@@ -50,8 +50,7 @@ export default class ShoppingCart extends Component {
 
   remove(itemIdToRemoveId) {
     delete this.items[itemIdToRemoveId];
-
-    this._render();
+    this.find(`[data-item-id="${ itemIdToRemoveId }"]`).closest('li').remove();
   }
 
   _render() {
