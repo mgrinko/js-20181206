@@ -223,7 +223,7 @@ const phoneDetails = {
 };
 
 const PhoneService = {
-  getAll() {
+  getAll(){//{ sortBy, query, page, perPage }) {
     return phonesFromServer;
   },
 

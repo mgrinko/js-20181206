@@ -1,63 +1,67 @@
+'use strict';
+
+
+import Comment from '../component.js';
 import PhoneCatalog from './components/phone-catalog.js';
-import BaseComponent from './components/base-component.js';
 import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
 
-export default class PhonesPage extends BaseComponent{
+export default class PhonesPage extends Comment {
   constructor({ element }) {
-    super({ element });
+    super({ element })
 
     this._render();
 
+    this._initCatalog();
+    this._initViewer();
+    this._initShoppingCart();
+    this._initFilter();
+  }
+
+  _initCatalog() {
     this._catalog = new PhoneCatalog({
-      element: this._element.querySelector('[data-component="phone-catalog"]'),
+      element: this.find('[data-component="phone-catalog"]'),
       phones: PhoneService.getAll(),
-      onPhoneSelected: (phoneId) => {
-        let phoneDetails = PhoneService.getById(phoneId);
-
-        this._catalog.hide();
-        this._viewer.show(phoneDetails);
-      },
-      onAddToCart: (phone) => {
-        this._cart.addItem(phone);
-      },
-      
     });
 
+    this._catalog.subscribe('phone-selected', (phoneId) => {
+      let phoneDetails = PhoneService.getById(phoneId);
+
+      this._catalog.hide();
+      this._viewer.show(phoneDetails);
+    });
+
+    this._catalog.subscribe('phone-added', (phoneId) => {
+      this._cart.add(phoneId);
+    });
+  }
+
+  _initViewer() {
     this._viewer = new PhoneViewer({
-      element: this._element.querySelector('[data-component="phone-viewer"]'),
-      onClose: () => {
-        this._catalog.show();
-      },
-      onAddToCart: (phone) => {
-        this._cart.addItem(phone);
-      }
+      element: this.find('[data-component="phone-viewer"]'),
     });
 
+    this._viewer.subscribe('back', () => {
+      this._viewer.hide();
+      this._catalog.show();
+    });
+
+    this._viewer.subscribe('add', (phone) => {
+      this._cart.add(phone);
+    });
+  }
+
+  _initShoppingCart() {
     this._cart = new ShoppingCart({
-      element: this._element.querySelector('[data-component="shopping-cart"]'),
+      element: this.find('[data-component="shopping-cart"]'),
     });
+  }
 
+  _initFilter() {
     this._filter = new Filter({
-      element: this._element.querySelector('[data-component="filter"]'),
-
-      onSort: (sortFn) => {
-        this._catalog.getPhones().sort(sortFn);
-        this._catalog.updateView();
-      },
-
-      onSearch: (matchString) => {
-        let phonesList = PhoneService.getAll();
-        if(matchString !== ''){
-          let newPhones = phonesList.filter(phone => phone.name.toLocaleLowerCase().includes(matchString.toLowerCase()));
-          this._catalog.setPhones(newPhones);
-        } else {
-          this._catalog.setPhones(phonesList);
-        }
-        this._catalog.updateView();
-      },
+      element: this.find('[data-component="filter"]'),
     });
   }
 

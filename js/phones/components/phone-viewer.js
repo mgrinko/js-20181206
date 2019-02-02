@@ -1,62 +1,42 @@
-import BaseComponent from './base-component.js';
+import Component from '../../component.js';
 
-export default class PhoneViewer extends BaseComponent {
-  constructor({ element, onClose, onAddToCart }) {
+export default class PhoneViewer extends Component {
+
+  constructor({ element }) {
     super({ element });
-    this._onClose = onClose;
-    this._onAddToCart = onAddToCart;
 
+    this._phoneDetails = null;
+
+    this.on('click', 'back-button', () => this.emit('back'));
+    this.on('click', 'add-button', () => this.emit('add', this._phoneDetails));
+
+    this.on('click', 'small-image', (event) => {
+      let smallImage = event.target;
+      let largeImage = this.find('[data-element="large-image"]');
+
+      largeImage.src = smallImage.src;
+    });
   }
 
   show(phoneDetails) {
-    super.show();
-
     this._phoneDetails = phoneDetails;
 
+    super.show();
+
     this._render();
-    this._mainImg = this._element.querySelector('[data-main-img]');
-    this._element.addEventListener('click', (event)=>{
-      const backBtn = event.target.closest('[data-back]');
-
-      if(!backBtn){
-       return;
-      }
-
-      this.hide();
-      this._onClose();
-    })
-
-    this._element.addEventListener('click', (event)=>{
-      const image = event.target.closest('[data-img-id]');
-
-      if(!image){
-        return;
-      }
-
-      const imgId = image.dataset.imgId;
-      this._mainImg.src = this._phoneDetails.images[imgId];
-      
-    })
-
-    this._element.addEventListener('click', (event)=>{
-     
-      const addToCartBtn = event.target.closest('[data-add-item]');
-      if(!addToCartBtn){
-        return;
-      }
-      this._onAddToCart(this._phoneDetails);
-
-    })
   }
-  
+
   _render() {
     let phone = this._phoneDetails;
 
     this._element.innerHTML = `
-      <img data-main-img class="phone" src="${ phone.images[0] }">
-
-      <button data-back>Back</button>
-      <button data-add-item>Add to basket</button>
+      <img
+        data-element="large-image"
+        class="phone"
+        src="${ phone.images[0] }"
+      >
+      <button data-element="back-button">Back</button>
+      <button data-element="add-button">Add to basket</button>
   
   
       <h1>${ phone.name }</h1>
@@ -64,11 +44,16 @@ export default class PhoneViewer extends BaseComponent {
       <p>${ phone.description }</p>
   
       <ul class="phone-thumbs">
-      ${phone.images.map((photo, ind) => `
-        <li>
-          <img data-img-id="${ind}" src="${photo}">
-        </li>
-        `).join('')}
+        ${ phone.images.map(imageUrl => `
+        
+          <li>
+            <img
+              data-element="small-image"
+              src="${ imageUrl }"
+            >
+          </li>
+        
+        `).join('') }
       </ul>
     `;
   }
