@@ -39,6 +39,10 @@ export default class ShoppingCart extends Component {
 
        this.items[itemId].count = count;
      });
+
+    this.on('click', 'clear-button', () => {
+       this.removeAll();
+     });
   }
 
   add(item) {
@@ -53,9 +57,19 @@ export default class ShoppingCart extends Component {
     this.find(`[data-item-id="${ itemIdToRemoveId }"]`).closest('li').remove();
   }
 
+  removeAll() {
+    this.items = {};
+    this._render();
+  }
+
   _render() {
     this._element.innerHTML = `
-      <p>Shopping Cart</p>
+      <p>
+        Shopping Cart
+        <button
+          data-element="clear-button"
+        >Clear cart</button>
+      </p>
       <ul>
         ${ Object.keys(this.items).map(itemId => {
           const item = this.items[itemId].item;
