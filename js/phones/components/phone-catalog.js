@@ -1,42 +1,24 @@
 'use strict';
 
-export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected, onAddToBasket }) {
-    this._element = element;
+import Component from "./component.js";
+
+export default class PhoneCatalog extends Component {
+  constructor({ element, phones}) {
+    super({element});
+    
     this._phones = phones;
-    this._onPhoneSelected = onPhoneSelected;
-    this._onAddToBasket = onAddToBasket;
 
     this._render();
 
-    this._element.addEventListener('click', (event) => {
-      this._showPhoneDetails();
-      this._addPhoneToBasket();
+    this.on('click', 'phone-link', (event)=>{
+      const phoneElement = event.target.closest('[data-element="phone"]');
+      this.emit('phone-selected', phoneElement.dataset.phoneId);
     });
-  }
 
-  _showPhoneDetails(){
-    const phoneLink = event.target.closest('[data-element="phone-link"]');
-    if (phoneLink) {
-      const phoneElement = phoneLink.closest('[data-element="phone"]');
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
-    }
-  }
-
-  _addPhoneToBasket(){
-    const addButton = event.target.closest('[data-element="buy-button"]');
-    if(addButton){
-      const phoneElement = addButton.closest('[data-element="phone"]');
-      this._onAddToBasket(phoneElement.dataset.phoneId);
-    }
-  }
-
-  hide() {
-    this._element.hidden = true;
-  }
-
-  show() {
-    this._element.hidden = false;
+    this.on('click', 'buy-button', (event)=>{
+      const phoneElement = event.target.closest('[data-element="phone"]');
+      this.emit('add-to-basket', phoneElement.dataset.phoneId);
+    });
   }
 
   _render() {

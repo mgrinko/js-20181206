@@ -1,44 +1,35 @@
-export default class PhoneViewer {
-  constructor({ element, phoneCatalog, cart }) {
-    this._element = element;
-    this._phoneCatalog = phoneCatalog;
-    this._cart = cart;
-    this._element.addEventListener('click', (event)=>{
-      if(event.target.closest('[data-element="back-button"]')){
-        this.hide();
-        this._phoneCatalog.show();
-      }
+import Component from "./component.js";
 
-      if(event.target.closest('[data-element="basket-add"]')){
-        this._cart.add(this._phoneDetails);
-      }
+export default class PhoneViewer extends Component {
+  constructor({ element }) {
+    super({element});
 
-      const imgClicked = event.target.closest('[data-img-index]');
-      if(imgClicked){
-        const mainImage = this._element.querySelector('[data-element="img"]');
-        mainImage.src = imgClicked.src;
-      }
+    this._phoneDetails = null;
 
+    this.on('click', 'back-button', (event)=>{ this.emit('back'); });
+
+    this.on('click', 'basket-add', (event)=>{ this.emit('add-to-basket', this._phoneDetails.id); });
+
+    this.on('click', 'small-image', (event)=> {
+      const smallImage = event.target;
+      const mainImage = this._element.querySelector('[data-element="main-img"]');
+      mainImage.src = smallImage.src;
     });
-  }
 
-
-  hide() {
-    this._element.hidden = true;
   }
 
   show(phoneDetails) {
-    this._element.hidden = false;
 
     this._phoneDetails = phoneDetails;
-
+    super.show();
     this._render();
   }
+
   _render() {
     let phone = this._phoneDetails;
 
     this._element.innerHTML = `
-      <img data-element="img" 
+      <img data-element="main-img" 
       class="phone" src="${ phone.images[0] }">
 
       <button 
@@ -57,8 +48,8 @@ export default class PhoneViewer {
       <ul class="phone-thumbs">
       ${phone.images.map((image, index)=>`
         <li>
-        <img data-img-index="${index}" src="${image}">
-      </li>
+        <img data-element="small-image" src="${image}">
+        </li>
       `
       ).join('')}
       </ul>

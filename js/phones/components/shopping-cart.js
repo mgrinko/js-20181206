@@ -1,20 +1,23 @@
-export default class ShoppingCart {
+import Component from "./component.js";
+
+export default class ShoppingCart extends Component {
   constructor({ element }) {
-    this._element = element;
+    super({element});
     this._items = [];
 
-    this._element.addEventListener('click', (event)=>{
-      const itemToDelete = event.target.closest('[data-delete-id]');
-      if(itemToDelete){
-        this._items = this._items.filter(item => 
-          item.id !== itemToDelete.dataset.deleteId);
-          this._render();
-      }
+    this.on('click', 'remove-button', (event)=>{
+      const itemToDelete = event.target.dataset.itemId;
+      this.remove(itemToDelete);
     });
   }
 
-  add(item) {
-    this._items.push(item);
+  add(itemId) {
+    this._items.push(itemId);
+    this._render();
+  }
+
+  remove(itemId) {
+    this._items = this._items.filter(item => item !== itemId);
     this._render();
   }
 
@@ -22,8 +25,14 @@ export default class ShoppingCart {
     this._element.innerHTML = `
       <p>Shopping Cart</p>
       <ul>
-      ${this._items.map(item=>`
-        <li>${item.name}<a data-delete-id="${item.id}" class="cart__delete-button">×</a></li>
+      ${this._items.map(itemId=>`
+        <li>${itemId}
+          <a 
+            data-element="remove-button" 
+            data-item-id="${ itemId }"
+            class="cart__remove-button">×
+          </a>
+        </li>
       `).join('')}
         
       </ul>
