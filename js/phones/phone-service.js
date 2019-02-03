@@ -43,8 +43,6 @@ const PhoneService = {
         xhr.open('GET', url, false);
         xhr.send();
 
-        console.log(xhr);
-
         this.cacheRequest[url] = xhr.response;
     }
 
