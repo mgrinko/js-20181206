@@ -1,30 +1,28 @@
-export default class PhoneViewer {
-  constructor({ element, onBackCatalog }) {
-    this._element = element;
-    this._onBackCatalog = onBackCatalog;
+import Base from './base.js';
+
+export default class PhoneViewer extends Base{
+  constructor({ element }) {
+    super({element});
 
     this._phoneDetails = null;
 
-    //галерея
-    this._element.addEventListener('click', (event) => {
-        const previewImage = event.target.closest('.js-preview_item_image');
-
-        if (!previewImage) return;
-
-        const viewImage = this._element.querySelector('.js-view_item_image');
-        viewImage.src = previewImage.src;
-    });
-
     //назад
-    this._element.addEventListener('click', (event) => {
-        const backLink = event.target.closest('.js-backLink');
+    this.on('click','.js-backLink','back');
 
-        if (!backLink) return;
+    //галерея
+    this.on('click','.js-preview_item_image','gallery');
 
-        this._onBackCatalog();
-    });
+    //клик по кнопке "add"
+    this.on('click','.js-addInCart','add-cart');
+
   }
 
+  show(phoneDetails){
+
+      super.show();
+      this._phoneDetails = phoneDetails;
+      this._render();
+  }
 
   _render() {
     let phone = this._phoneDetails;
@@ -47,24 +45,13 @@ export default class PhoneViewer {
       <p>${ phone.description }</p>
   
       <ul class="phone-thumbs">
-        <li>
-          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-        </li>
-        <li>
-          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-        </li>
-        <li>
-          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-        </li>
-        <li>
-          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-        </li>
-        <li>
-          <img class="js-preview_item_image" src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-        </li>
+        
+        ${ phone.images.map(image=>`
+            <li>
+              <img class="js-preview_item_image" src="${ image }">
+            </li>
+        `).join('') }
+        
       </ul>
     `;
   }

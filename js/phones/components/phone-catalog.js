@@ -1,24 +1,20 @@
-'use strict';
+import Base from './base.js';
 
-export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected }) {
-    this._element = element;
+export default class PhoneCatalog extends Base{
+  constructor({ element, phones }) {
+    super({element});
+
     this._phones = phones;
-    this._onPhoneSelected = onPhoneSelected;
 
     this._render();
 
-    this._element.addEventListener('click', (event) => {
-      const phoneLink = event.target.closest('[data-element="phone-link"]');
+    //клик по ссылке товара
+    this.on('click','[data-element="phone-link"]','open-phone');
 
-      if (!phoneLink) {
-        return;
-      }
+    //клик по кнопке "add"
+    this.on('click','.js-addInCart','add-cart');
 
-      const phoneElement = phoneLink.closest('[data-element="phone"]');
 
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
-    });
   }
 
 

@@ -223,13 +223,50 @@ const phoneDetails = {
 };
 
 const PhoneService = {
-  getAll() {
-    return phonesFromServer;
+
+
+  getAll(query='',sort='',page=1,onPage=0) {
+
+
+
+    let phonesList = this.request('https://mgrinko.github.io/js-20181206/phones/phones.json');
+    //фильтрация
+
+    phonesList = phonesList.filter((phone)=>{
+      let namePhone = phone.name.toLowerCase();
+      return namePhone.includes(query);
+    });
+
+    //сортировка
+    phonesList.sort((a,b)=>{
+      let valA = a[sort];
+      let valB = b[sort];
+      if(sort==='name'){
+        valA.toLowerCase();
+        valB.toLowerCase();
+      }
+
+      if (valA < valB) return -1;//сортируем строки по возрастанию
+      if (valA > valB) return 1;
+      return 0;
+
+    });
+
+    return phonesList;
   },
 
   getById(phoneId) {
-    return phoneDetails;
+    return this.request('https://mgrinko.github.io/js-20181206/phones/'+phoneId+'.json');
   },
+
+  request(url){
+      let xhr = new XMLHttpRequest();
+
+      xhr.open('GET', url, true);
+      xhr.send();
+
+      return JSON.parse(xhr.responseText);
+  }
 };
 
 export default PhoneService;

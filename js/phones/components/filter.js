@@ -1,19 +1,29 @@
-import Components from './components.js';
+import Base from './base.js';
 
-export default class Filter extends Components{
-  constructor({ element, onSort }) {
-      super();
-      this._element = element;
-      this._onSort = onSort;
+export default class Filter extends Base{
+  constructor({ element }) {
+      super({ element });
+
+      this._typeSorting = [
+          {
+              title:'Новизна',
+              sortField:'age',
+          },
+          {
+              title:'Алфавит',
+              sortField:'name',
+          }
+      ];
 
       this._render();
+
 
       this._searchInput = this._element.querySelector('.js-search_input');
       this._sortableOptions = this._element.querySelector('.js-sortable_options');
 
-
-      this._searchInput.addEventListener('input', this._debounce(this._onSort, 300));
-      this._sortableOptions.addEventListener('input', this._onSort);
+        this.on('input','.js-search_input, .js-sortable_options','filter-catalog');
+      //this._searchInput.addEventListener('input', this.debounce(this._onSort, 300));
+      //this._sortableOptions.addEventListener('input', this._onSort);
 
   }
 
@@ -27,8 +37,9 @@ export default class Filter extends Components{
       <p>
         Sort by:
         <select class="js-sortable_options">
-          <option value="name">Alphabetical</option>
-          <option value="age">Newest</option>
+          ${ this._typeSorting.map(type=>`
+            <option value="${ type.sortField }">${ type.title }</option>
+          `).join('') }
         </select>
       </p>
     `;

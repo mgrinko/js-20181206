@@ -107,9 +107,19 @@ h1 {
 }
 
 .delete_cart{
+  display: inline-block;
+  margin-left: 30px;
   cursor: pointer;
   color: #f00;
 }
 .delete_cart:hover{
   color: #a50000;
+}
+
+.js-itemInCart{
+  user-select:none
+}
+
+.controlCart{
+  cursor: pointer;
 }
