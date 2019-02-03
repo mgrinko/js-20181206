@@ -10,7 +10,12 @@ export default class ShoppingCart extends Base{
 
     //удаление
     this.on('click','.js-delInCart','del-cart');
+
+    //кол-во
     this.on('click','.js-controlCart','update-count');
+
+    //очистка
+    this.on('click','.js-clearCart','clear');
 
   }
 
@@ -43,6 +48,12 @@ export default class ShoppingCart extends Base{
     this._render();
   }
 
+  _clearCart() {
+    this._addedItems.clear();
+
+    this._render();
+  }
+
   _render() {
 
     if (!this._addedItems.size){
@@ -70,6 +81,7 @@ export default class ShoppingCart extends Base{
     this._element.innerHTML = `
       <p>Shopping Cart</p>
       <ul>${ itemsHtml }</ul>
+      <div><button class="js-clearCart">Удалить все</button></div>
     `;
   }
 }

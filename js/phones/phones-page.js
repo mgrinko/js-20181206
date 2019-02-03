@@ -79,6 +79,10 @@ export default class PhonesPage extends Base{
           let itemElement = event.target.closest('.js-itemInCart');
           this._cart._updateItem(itemElement.dataset.id,event.target.dataset.type);
       });
+
+      this._cart.subscribe('clear',(event)=>{
+          this._cart._clearCart();
+      });
   }
 
   _initFilter(){
