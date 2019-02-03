@@ -7,7 +7,6 @@ const PhoneService = {
     let phonesList = this.request('phones/phones.json');
     //фильтрация
 
-      console.log(phonesList);
     phonesList = phonesList.filter((phone)=>{
       let namePhone = phone.name.toLowerCase();
       return namePhone.includes(query);
