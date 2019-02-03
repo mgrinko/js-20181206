@@ -33,15 +33,15 @@ export default class PhoneViewer extends Component {
       <img
         data-element="large-image"
         class="phone"
-        src="${ phone.images[0] }"
+        src="${ phone.images[0]}"
       >
       <button data-element="back-button">Back</button>
       <button data-element="add-button">Add to basket</button>
   
   
-      <h1>${ phone.name }</h1>
+      <h1>${ phone.name}</h1>
   
-      <p>${ phone.description }</p>
+      <p>${ phone.description}</p>
   
       <ul class="phone-thumbs">
         ${ phone.images.map(imageUrl => `
@@ -49,11 +49,11 @@ export default class PhoneViewer extends Component {
           <li>
             <img
               data-element="small-image"
-              src="${ imageUrl }"
+              src="${ imageUrl}"
             >
           </li>
         
-        `).join('') }
+        `).join('')}
       </ul>
     `;
   }

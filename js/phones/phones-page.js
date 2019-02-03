@@ -1,41 +1,45 @@
 'use strict';
 
-
-import Comment from '../component.js';
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
+import Component from '../component.js';
 
-export default class PhonesPage extends Comment {
+export default class PhonesPage extends Component {
   constructor({ element }) {
     super({ element })
 
     this._render();
 
+    this._initFilter();
     this._initCatalog();
     this._initViewer();
     this._initShoppingCart();
-    this._initFilter();
   }
 
   _initCatalog() {
-    this._catalog = new PhoneCatalog({
-      element: this.find('[data-component="phone-catalog"]'),
-      phones: PhoneService.getAll(),
-    });
+    PhoneService.getAll({ sortBy: this._filter.sortBy, query: this._filter.queryString })
+      .then(phones => {
+        this._catalog = new PhoneCatalog({
+          element: this.find('[data-component="phone-catalog"]'),
+          phones,
+        });
 
-    this._catalog.subscribe('phone-selected', (phoneId) => {
-      let phoneDetails = PhoneService.getById(phoneId);
+        this._catalog.subscribe('phone-selected', (phoneId) => {
+          PhoneService.getById(phoneId)
+            .then(phoneDetails => {
+              this._catalog.hide();
+              this._viewer.show(phoneDetails);
+            })
+        });
 
-      this._catalog.hide();
-      this._viewer.show(phoneDetails);
-    });
+        this._catalog.subscribe('phone-added', (phoneId) => {
+          this._cart.add(phoneId);
+        });
+      })
 
-    this._catalog.subscribe('phone-added', (phoneId) => {
-      this._cart.add(phoneId);
-    });
   }
 
   _initViewer() {
@@ -63,6 +67,18 @@ export default class PhonesPage extends Comment {
     this._filter = new Filter({
       element: this.find('[data-component="filter"]'),
     });
+
+    this._filter.subscribe('sort-select', ({ sortBy, queryString }) => {
+      PhoneService.getAll({ sortBy, query: queryString }).then(phones => {
+        this._catalog.updateView(phones);
+      })
+    })
+
+    this._filter.subscribe('search-select', ({ sortBy, queryString }) => {
+      PhoneService.getAll({ sortBy, query: queryString }).then(phones => {
+        this._catalog.updateView(phones);
+      })
+    })
   }
 
   _render() {
