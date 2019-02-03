@@ -265,7 +265,7 @@ const PhoneService = {
       xhr.open('GET', url, true);
       xhr.send();
 
-      return JSON.parse(xhr.responseText);
+      return xhr.responseText;
   }
 };
 
