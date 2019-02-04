@@ -41,25 +41,6 @@ export default class ShoppingCart extends Component {
   }
 
   _render() {
-    let basketItem = "";
-    for(let itemId in this._basket){
-      basketItem+=`
-      <li>${ itemId }&nbsp;
-      ${ this._basket[itemId] }
-      <a 
-      data-element="add-button" 
-      data-item-id="${ itemId }"
-      class="cart__remove-button">+
-      </a>
-      <a 
-        data-element="remove-button" 
-        data-item-id="${ itemId }"
-        class="cart__remove-button">-
-      </a>
-    </li>
-      `
-    }
-
     this._element.innerHTML = `
       <p>Shopping Cart</p>
       <a 
@@ -68,7 +49,21 @@ export default class ShoppingCart extends Component {
         Очистить
       </a>
       <ul>
-      ${basketItem}
+      ${ Object.keys(this._basket).map(itemId => `
+          <li>${ itemId }&nbsp;
+            ${ this._basket[itemId] }
+            <a 
+              data-element="add-button" 
+              data-item-id="${ itemId }"
+              class="cart__remove-button">+
+            </a>
+            <a 
+              data-element="remove-button" 
+              data-item-id="${ itemId }"
+              class="cart__remove-button">-
+            </a>
+          </li>
+      `).join('') }
       </ul>
     `;
   }

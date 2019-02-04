@@ -21,7 +21,7 @@ export default class PhonesPage {
   _initCatalog(){
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
-      phones: PhoneService.getAll()
+      phones: PhoneService.getAll({sortBy: 'name', query: 'moto'})
     });
 
     this._catalog.subscribe('phone-selected', (phoneId) => {
@@ -61,6 +61,16 @@ export default class PhonesPage {
   _initFilter(){
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
+    });
+
+    this._filter.subscribe('change-sort', ({sortBy, query})=>{
+      const phones = PhoneService.getAll({sortBy: sortBy, query: query});
+      this._catalog.changePhones(phones);
+    });
+
+    this._filter.subscribe('filter-ready', ({sortBy, query})=>{
+      const phones = PhoneService.getAll({sortBy: sortBy, query: query});
+      this._catalog.changePhones(phones);
     });
   }
 

@@ -21,6 +21,11 @@ export default class PhoneCatalog extends Component {
     });
   }
 
+  changePhones(phones){
+    this._phones = phones;
+    this._render();
+  }
+
   _render() {
     this._element.innerHTML = `
       <ul class="phones">

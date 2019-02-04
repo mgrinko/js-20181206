@@ -223,13 +223,56 @@ const phoneDetails = {
 };
 
 const PhoneService = {
-  getAll() {
-    return phonesFromServer;
+
+  getAll({ sortBy, query, page, perPage }) {
+
+    let phones = phonesFromServer.slice(); 
+
+    phones = this._filterPhones(phones, query);
+
+    this._sortPhones(phones, sortBy);
+
+    return phones;
   },
 
   getById(phoneId) {
     return phoneDetails;
   },
+
+  _sortPhones(phones, sortBy){
+    switch(sortBy){
+      case 'name':
+        this._sortByName(phones);
+        break;
+      case 'age':
+        this._sortByAge(phones);
+        break;
+      default: 
+      break;
+    }
+  },
+
+  _sortByName(phones){
+    phones.sort((a, b)=>{
+      return a.name.localeCompare(b.name);
+    })
+  },
+
+  _sortByAge(phones){
+    phones.sort((a, b)=>{
+      return (a.age - b.age);
+    })
+  },
+
+  _filterPhones(phones, query){
+    if(query){
+
+      phones = phones.filter((phone)=>{
+        return phone.name.toLowerCase().includes(query.toLowerCase());
+      });
+    }
+    return phones;
+  }
 };
 
 export default PhoneService;
