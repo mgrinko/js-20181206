@@ -222,6 +222,7 @@ const phoneDetails = {
   }
 };
 
+
 const PhoneService = {
   getAll() {
     return phonesFromServer;
