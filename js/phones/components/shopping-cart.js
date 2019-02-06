@@ -57,13 +57,12 @@ export default class ShoppingCart extends Component {
       input.value = newValue;
 
       input.dispatchEvent(new Event('change', { bubbles: true }));
-
     });
   }
 
   add(item) {
     if (!this.items[item.id]) {
-      this.items[item.id] = { item, count: 1 };
+      this.items[item.id] = { itemInfo:item, count: 1 };
       this._render();
     }
   }
@@ -87,39 +86,36 @@ export default class ShoppingCart extends Component {
         >Clear cart</button>
       </p>
       <ul>
-        ${ Object.keys(this.items).map(itemId => {
-      const item = this.items[itemId].item;
-      const count = this.items[itemId].count;
-      return `
+        ${ Object.values(this.items).map(item => `
           <li>
             <p>
-              ${ item.name}
+              ${ item.itemInfo.name}
             </p>
             <button
               data-element="decrease-button"
-              data-item-id="${ itemId}"
+              data-item-id="${ item.itemInfo.id}"
             >
               -
             </button>
             <input type="text" style="width:40px;"
               data-element="item-count"
-              value="${ count}"
-              data-item-id="${ itemId}"
+              value="${ item.count}"
+              data-item-id="${  item.itemInfo.id}"
             >
             <button
               data-element="increase-button"
-              data-item-id="${ itemId}"
+              data-item-id="${  item.itemInfo.id}"
             >
               +
             </button>
             <button
               data-element="remove-button"
-              data-item-id="${ itemId}"
+              data-item-id="${  item.itemInfo.id}"
             >
               X
             </button>
           </li>
-        `}).join('')}
+        `).join('')}
       </ul>
     `;
   }

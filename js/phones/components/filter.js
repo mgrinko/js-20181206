@@ -7,24 +7,21 @@ export default class Filter extends Component {
   constructor({ element }) {
     super({ element })
     this.sortBy = 'age';
+    this.SEARCH_DELAY = 500;
     this.queryString = '';
     this._render();
 
     this.on('input', 'search', Helper.debounce((event) => {
       let queryString = event.target.value;
       this.queryString = queryString;
-      this.emit('search-select', { queryString, sortBy: this.sortBy });
-    }, 300));
+      this.emit('query-changed', { queryString, sortBy: this.sortBy });
+    }, this.SEARCH_DELAY));
 
     this.on('change', 'sort', (event) => {
       let sortBy = event.target.value;
       this.sortBy = sortBy;
-      this.emit('sort-select', { queryString: this.queryString, sortBy });
+      this.emit('sort-changed', { queryString: this.queryString, sortBy });
     });
-
-  }
-
-  search() {
 
   }
 

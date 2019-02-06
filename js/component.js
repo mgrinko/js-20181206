@@ -17,7 +17,6 @@ export default class Component {
         callback(event);
       } else {
 
-
         for (let i = 0; i < elementsNames.length; i++) {
           const delegateTarget = event.target.closest(`[data-element="${elementsNames[i]}"]`);
 

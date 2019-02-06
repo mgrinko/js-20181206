@@ -19,26 +19,25 @@ export default class PhonesPage extends Component {
     this._initShoppingCart();
   }
 
-  _initCatalog() {
-    PhoneService.getAll({ sortBy: this._filter.sortBy, query: this._filter.queryString })
-      .then(phones => {
-        this._catalog = new PhoneCatalog({
-          element: this.find('[data-component="phone-catalog"]'),
-          phones,
-        });
+  async _initCatalog() {
+    let phones = await PhoneService.getAll({ sortBy: this._filter.sortBy, query: this._filter.queryString });
 
-        this._catalog.subscribe('phone-selected', (phoneId) => {
-          PhoneService.getById(phoneId)
-            .then(phoneDetails => {
-              this._catalog.hide();
-              this._viewer.show(phoneDetails);
-            })
-        });
+    this._catalog = new PhoneCatalog({
+      element: this.find('[data-component="phone-catalog"]'),
+      phones,
+    });
 
-        this._catalog.subscribe('phone-added', (phoneId) => {
-          this._cart.add(phoneId);
-        });
-      })
+    this._catalog.subscribe('phone-selected', async (phoneId) => {
+      let phoneDetails = await PhoneService.getById(phoneId);
+
+      this._catalog.hide();
+      this._viewer.show(phoneDetails);
+
+    });
+
+    this._catalog.subscribe('phone-added', (phoneId) => {
+      this._cart.add(phoneId);
+    });
 
   }
 
@@ -68,17 +67,16 @@ export default class PhonesPage extends Component {
       element: this.find('[data-component="filter"]'),
     });
 
-    this._filter.subscribe('sort-select', ({ sortBy, queryString }) => {
-      PhoneService.getAll({ sortBy, query: queryString }).then(phones => {
-        this._catalog.updateView(phones);
-      })
-    })
+    this._filter.subscribe('sort-changed', this._changeFilter.bind(this));
+    this._filter.subscribe('query-changed', this._changeFilter.bind(this));
 
-    this._filter.subscribe('search-select', ({ sortBy, queryString }) => {
-      PhoneService.getAll({ sortBy, query: queryString }).then(phones => {
-        this._catalog.updateView(phones);
-      })
-    })
+  }
+
+  async _changeFilter({ sortBy, queryString }) {
+    
+    let phones = await PhoneService.getAll({ sortBy, query: queryString });
+    this._catalog.updateView(phones);
+    
   }
 
   _render() {

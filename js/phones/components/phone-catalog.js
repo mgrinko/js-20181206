@@ -8,7 +8,6 @@ export default class PhoneCatalog extends Component {
 
     this._render();
 
-
     this.on('click', 'phone-link', (event) => {
       const phoneElement = event.target.closest('[data-element="phone"]');
 
@@ -65,7 +64,6 @@ export default class PhoneCatalog extends Component {
           </li>
         
         `).join('')}
-      
         
       </ul> 
     `;

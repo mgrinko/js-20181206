@@ -1,31 +1,38 @@
 const PhoneService = {
-  getAll: function ({ sortBy, query, page = 1, perPage = 1 }) {
-    return fetch('./phones/phones.json', {
-      method: "GET"
-    })
-      .then(response => response.json())
-      .then(phones => {
-        if (query) {
-          phones = phones.filter(phone => phone.name.toLowerCase().includes(query.toLowerCase())).sort((phone1, phone2) => phone1[sortBy] > phone2[sortBy] ? 1 : -1);
-        } else {
-          phones.sort((phone1, phone2) => phone1[sortBy] > phone2[sortBy] ? 1 : -1);
-        }
-        return phones;
-      })
+  async getAll({ sortBy, query, page = 1, perPage = 1 }) {
+    let phones = await fetch('./phones/phones.json');
+    phones = await phones.json();
 
-
+    if (query) {
+      phones = this._filter(phones, query);
+    }
+    
+    phones = this._sort(phones, sortBy);
+    
+    return phones;
   },
 
-  getById(phoneId) {
-    return fetch(`./phones/${phoneId}.json`, {
-      method: "GET"
-    })
-      .then(response => response.json())
-      .then(phone => {
+  async getById(phoneId) {
+    let phoneDetailResponse = await fetch(`./phones/${phoneId}.json`);
+    let phoneDetail = await phoneDetailResponse.json();
+    
+    return phoneDetail;
+  },
 
-        return phone;
-      })
-  }
+  _filter(phones, query) {
+    const normalizedQuery = query.toLowerCase();
+
+    return phones.filter((phone) => {
+      return phone.name.toLowerCase().includes(normalizedQuery);
+    });
+  },
+
+  _sort(phones, sortBy) {
+    return phones.sort((phoneA, phoneB) => {
+      return phoneA[sortBy] > phoneB[sortBy] ? 1 : -1
+    });
+  },
+
 };
 
 export default PhoneService;
