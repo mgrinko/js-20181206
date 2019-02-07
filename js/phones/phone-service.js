@@ -4,24 +4,27 @@ const PhoneService = {
   getAll(callback, { query = '', orderBy = 'age', page = 1, perPage = 10 } = {}) {
     let url = 'https://mgrinko.github.io/js-20181206/phones/phones.json';
 
-    this._sendRequest(url, (phones) => {
+    const phonesPromise = this._sendRequest(url);
+
+    phonesPromise.then((phones) => {
       const filteredPhones = this._filter(phones, query);
       const sortedPhones = this._sort(filteredPhones, orderBy);
 
       callback(sortedPhones);
-    });
+    })
   },
 
   getById(phoneId, callback) {
     let url = `https://mgrinko.github.io/js-20181206/phones/${ phoneId }.json`;
 
-    this._sendRequest(url, callback);
+    let phoneDetailsPromise = this._sendRequest(url);
+
+    phoneDetailsPromise.then(callback)
   },
 
 
-  _sendRequest(url, callback) {
-
-    const instrutionsFn = (resolve, reject) => {
+  _sendRequest(url) {
+    const instructionsFn = (resolve, reject) => {
       let xhr = new XMLHttpRequest();
 
       xhr.open('GET', url, true);
@@ -39,14 +42,7 @@ const PhoneService = {
       };
     };
 
-    const requestPromise = new Promise(instrutionsFn);
-
-    requestPromise.then(
-      (data) => {
-        callback(data);
-      }
-    );
-
+    return new Promise(instructionsFn);
   },
 
   _filter(phones, query) {
