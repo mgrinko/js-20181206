@@ -20,21 +20,33 @@ const PhoneService = {
 
 
   _sendRequest(url, callback) {
-    let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', url, true);
-    xhr.send();
+    const instrutionsFn = (resolve, reject) => {
+      let xhr = new XMLHttpRequest();
 
-    xhr.onload = () => {
-      if (xhr.status !== 200) {
-        console.error(`Server error: ${ xhr.status } ${ xhr.statusText }`);
-        return {};
-      }
+      xhr.open('GET', url, true);
+      xhr.send();
 
-      const data = JSON.parse(xhr.responseText);
+      xhr.onload = () => {
+        if (xhr.status !== 200) {
+          reject(`Server error: ${ xhr.status } ${ xhr.statusText }`);
+          return;
+        }
 
-      callback(data);
+        const data = JSON.parse(xhr.responseText);
+
+        resolve(data);
+      };
     };
+
+    const requestPromise = new Promise(instrutionsFn);
+
+    requestPromise.then(
+      (data) => {
+        callback(data);
+      }
+    );
+
   },
 
   _filter(phones, query) {
