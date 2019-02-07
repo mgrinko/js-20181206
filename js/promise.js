@@ -7,6 +7,8 @@ const STATUS_REJECTED = 'rejected';
 class MyPromise {
   constructor(instructionsFn) {
     this._status = STATUS_PENDING;
+    this._result = null;
+
     this._errorCallbacks = [];
     this._successCallbacks = [];
 
@@ -19,6 +21,7 @@ class MyPromise {
     }
 
     this._status = STATUS_RESOLVED;
+    this._result = data;
 
     for (let callback of this._successCallbacks) {
       callback(data);
@@ -31,6 +34,7 @@ class MyPromise {
     }
 
     this._status = STATUS_REJECTED;
+    this._result = error;
 
     for (let callback of this._errorCallbacks) {
       callback(error);
@@ -38,6 +42,16 @@ class MyPromise {
   }
 
   then(onSuccess, onError) {
+    if (this._status === STATUS_RESOLVED && onSuccess) {
+      onSuccess(this._result)
+      return;
+    }
+
+    if (this._status === STATUS_REJECTED && onError) {
+      onError(this._result)
+      return;
+    }
+
     if (onSuccess) {
       this._successCallbacks.push(onSuccess)
     }
@@ -47,22 +61,3 @@ class MyPromise {
     }
   }
 }
-
-
-
-Promise.resolve(123)
-  .then((data) => {
-    console.log(data, 3);
-    JSON.parse('{')
-  })
-  .catch((error) => {
-    console.warn(error, 3);
-  })
-  .then(
-    data => console.log(data)
-  )
-  .catch((error) => {
-    console.warn(error, 3);
-  });
-
-
