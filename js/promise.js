@@ -42,22 +42,39 @@ class MyPromise {
   }
 
   then(onSuccess, onError) {
-    if (this._status === STATUS_RESOLVED && onSuccess) {
-      onSuccess(this._result)
-      return;
+
+    let handleSuccess;
+    let handleError;
+
+    const newPromise = new MyPromise((resolve, reject) => {
+      handleSuccess = (data) => {
+        let result = onSuccess(data);
+
+        resolve(result)
+      };
+
+      handleError = (error) => {
+        let result = onError(error);
+
+        resolve(result)
+      };
+    });
+
+
+
+    if (this._status === STATUS_RESOLVED) {
+      onSuccess(this._result);
+      return newPromise;
     }
 
-    if (this._status === STATUS_REJECTED && onError) {
-      onError(this._result)
-      return;
+    if (this._status === STATUS_REJECTED) {
+      onError(this._result);
+      return newPromise;
     }
 
-    if (onSuccess) {
-      this._successCallbacks.push(onSuccess)
-    }
+    this._successCallbacks.push(handleSuccess);
+    this._errorCallbacks.push(handleError);
 
-    if (onError) {
-      this._errorCallbacks.push(onSuccess)
-    }
+    return newPromise;
   }
 }
