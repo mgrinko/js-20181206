@@ -19,7 +19,7 @@ const PhoneService = {
 
     let phoneDetailsPromise = this._sendRequest(url);
 
-    phoneDetailsPromise.then(callback)
+    return phoneDetailsPromise;
   },
 
 
