@@ -43,7 +43,7 @@ const weddingPromise = new Promise(instructionFunction);
 weddingPromise
   .then((data1) => {
     console.log(1111, data1);
-
+    return 2;
   })
   .then((data2) => {
     console.log(2222, data2);
