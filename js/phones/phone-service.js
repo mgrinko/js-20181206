@@ -3,7 +3,7 @@
 const PhoneService = {
 
   async getAll({ query = '', orderBy = 'age' }) {
-    let url = 'https://mgrinko.github.asdio/js-20181206/phones/phones.json';
+    let url = 'https://mgrinko.github.io/js-20181206/phones/phones.json';
 
     const phones = await this._sendRequest(url);
     const filteredPhones = this._filter(phones, query);
@@ -13,7 +13,7 @@ const PhoneService = {
   },
 
   getById(phoneId, callback) {
-    let url = `https://mgrinko.github.io/js-20181206/phones/${ phoneId }.json`;
+    let url = `https://mgrinko.giasdthub.io/js-20181206/phones/${ phoneId }.json`;
 
     return this._sendRequest(url);
   },

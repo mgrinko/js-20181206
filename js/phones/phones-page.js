@@ -39,10 +39,15 @@ export default class PhonesPage {
     });
 
     this._catalog.subscribe('phone-selected', async (phoneId) => {
-      const phoneDetails = await PhoneService.getById(phoneId);
+      try {
+        const phoneDetails = await PhoneService.getById(phoneId);
 
-      this._viewer.show(phoneDetails);
-      this._catalog.hide();
+        this._viewer.show(phoneDetails);
+        this._catalog.hide();
+      } catch (e) {
+        alert('Error');
+      }
+
     });
 
     this._catalog.subscribe('phone-added', (phoneId) => {
