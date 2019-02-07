@@ -1,25 +1,23 @@
 
 
 const PhoneService = {
-  getAll(callback, { query = '', orderBy = 'age', page = 1, perPage = 10 } = {}) {
+
+  getAll({ query = '', orderBy = 'age', page = 1, perPage = 10 } = {}) {
     let url = 'https://mgrinko.github.io/js-20181206/phones/phones.json';
 
-    const phonesPromise = this._sendRequest(url);
+    return this._sendRequest(url)
+      .then((phones) => {
+        const filteredPhones = this._filter(phones, query);
+        const sortedPhones = this._sort(filteredPhones, orderBy);
 
-    phonesPromise.then((phones) => {
-      const filteredPhones = this._filter(phones, query);
-      const sortedPhones = this._sort(filteredPhones, orderBy);
-
-      callback(sortedPhones);
-    })
+        return sortedPhones;
+      });
   },
 
   getById(phoneId, callback) {
     let url = `https://mgrinko.github.io/js-20181206/phones/${ phoneId }.json`;
 
-    let phoneDetailsPromise = this._sendRequest(url);
-
-    return phoneDetailsPromise;
+    return this._sendRequest(url);
   },
 
 

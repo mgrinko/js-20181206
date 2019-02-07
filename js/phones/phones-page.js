@@ -21,13 +21,12 @@ export default class PhonesPage {
   }
 
   _showPhones() {
-    PhoneService.getAll(
-      (phones) => {
-        this._catalog.show(phones);
-      },
+    let filterData = this._filter.getCurrentData();
+    let phonesPromise = PhoneService.getAll(filterData);
 
-      this._filter.getCurrentData()
-    );
+    phonesPromise.then((phones) => {
+      this._catalog.show(phones);
+    });
   }
 
   _initCatalog() {

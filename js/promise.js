@@ -36,16 +36,28 @@ class MyPromise {
 
 const instructionFunction = (resolve, reject) => {
   resolve(1);
-  resolve(2);
-  reject(3);
 };
 
 const weddingPromise = new Promise(instructionFunction);
 
-weddingPromise.then(
-  (data) => console.log('OK: ', data)
-);
+weddingPromise
+  .then((data1) => {
+    console.log(1111, data1);
 
-weddingPromise.catch(
-  (error) => console.warn('FAIL: ', error)
-);
+  })
+  .then((data2) => {
+    console.log(2222, data2);
+  });
+
+
+let tempPromise = weddingPromise
+  .then((data1) => {
+    console.log(1111, data1);
+    return 2;
+  });
+
+tempPromise
+  .then((data2) => {
+    console.log(2222, data2);
+  });
+
