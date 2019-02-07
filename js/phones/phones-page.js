@@ -20,11 +20,17 @@ export default class PhonesPage {
     this._showPhones();
   }
 
-  async _showPhones() {
+  _showPhones() {
     const filterData = this._filter.getCurrentData();
-    const phones = await PhoneService.getAll(filterData);
 
-    this._catalog.show(phones);
+
+    PhoneService.getAll(filterData)
+      .then(phones => {
+        this._catalog.show(phones);
+      })
+      .catch(error => {
+        console.warn('Server unavailable');
+      });
   }
 
   _initCatalog() {

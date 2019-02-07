@@ -24,40 +24,21 @@ class MyPromise {
   }
 }
 
-// document.addEventListener('click', () => {
-//   console.log('Clicked');
-//   resolve('success');
-// });
-//
-// setTimeout(() => {
-//   console.log('Timeout occurred');
-//   reject('error');
-// }, 5000);
 
-const instructionFunction = (resolve, reject) => {
-  resolve(1);
-};
 
-const weddingPromise = new Promise(instructionFunction);
-
-weddingPromise
-  .then((data1) => {
-    console.log(1111, data1);
-    return 2;
+Promise.resolve(123)
+  .then((data) => {
+    console.log(data, 3);
+    JSON.parse('{')
   })
-  .then((data2) => {
-    console.log(2222, data2);
+  .catch((error) => {
+    console.warn(error, 3);
+  })
+  .then(
+    data => console.log(data)
+  )
+  .catch((error) => {
+    console.warn(error, 3);
   });
 
-
-let tempPromise = weddingPromise
-  .then((data1) => {
-    console.log(1111, data1);
-    return 2;
-  });
-
-tempPromise
-  .then((data2) => {
-    console.log(2222, data2);
-  });
 
