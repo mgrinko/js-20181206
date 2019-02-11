@@ -1,5 +1,11 @@
 import Component from '../../component.js';
 
+import styleText from 'raw-loader!./phone-catalog.css';
+
+let style = document.createElement('style');
+style.innerHTML = styleText;
+document.head.appendChild(style);
+
 export default class PhoneCatalog extends Component {
   constructor({ element }) {
     super({ element });
