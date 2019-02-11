@@ -10,6 +10,7 @@
     "webpack-cli": "^3.2.3"
   },
   "scripts": {
+    "build": "webpack ",
     "start": "node server.js"
   },
   "repository": {
