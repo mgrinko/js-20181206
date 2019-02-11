@@ -13,11 +13,13 @@
     "babel-loader": "^8.0.5",
     "node-static": "^0.7.11",
     "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
     "build": "webpack ",
-    "start": "node server.js"
+    "start": "webpack-dev-server --open",
+    "static": "node server.js"
   },
   "repository": {
     "type": "git",
