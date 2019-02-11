@@ -3,14 +3,28 @@
   "version": "1.0.0",
   "description": "1. Install [node.js](https://nodejs.org/en/) 2. Run `npm install node-static` in project folder 3. Run `node server.js` in project folder 4. Open `http://localhost:8080/` in browser",
   "main": "server.js",
-  "dependencies": {},
+  "dependencies": {
+    "@babel/runtime": "^7.3.1"
+  },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.0",
     "node-static": "^0.7.11",
+    "raw-loader": "^1.0.0",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.1.1",
     "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
-    "start": "node server.js"
+    "build": "webpack --mode none",
+    "build:prod": "webpack --mode production",
+    "start": "webpack-dev-server --open",
+    "static": "node server.js"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,7 @@
 import Component from '../../component.js';
 
+import './phone-catalog.css';
+
 export default class PhoneCatalog extends Component {
   constructor({ element }) {
     super({ element });
