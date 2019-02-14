@@ -46,17 +46,17 @@ class MyPromise {
     let handleSuccess;
     let handleError;
 
-    const newPromise = new MyPromise((resolve, reject) => {
+    const newPromise = new MyPromise((resolve) => {
       handleSuccess = (data) => {
         let result = onSuccess(data);
 
-        resolve(result)
+        resolve(result);
       };
 
       handleError = (error) => {
         let result = onError(error);
 
-        resolve(result)
+        resolve(result);
       };
     });
 

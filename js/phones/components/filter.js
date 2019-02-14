@@ -1,4 +1,5 @@
 import Component from '../../component.js';
+import debounce from 'lodash/debounce';
 
 export default class Filter extends Component {
   constructor({ element }) {
@@ -6,7 +7,7 @@ export default class Filter extends Component {
 
     this._render();
 
-    const emitQueryChangedWithDeboune = _.debounce(
+    const emitQueryChangedWithDeboune = debounce(
       (event) => {
         this.emit('query-changed', event.target.value);
       },

@@ -28,8 +28,8 @@ export default class PhonesPage {
       .then(phones => {
         this._catalog.show(phones);
       })
-      .catch(error => {
-        console.warn('Server unavailable');
+      .catch(() => {
+        // console.warn('Server unavailable');
       });
   }
 

@@ -4,7 +4,8 @@
   "description": "1. Install [node.js](https://nodejs.org/en/) 2. Run `npm install node-static` in project folder 3. Run `node server.js` in project folder 4. Open `http://localhost:8080/` in browser",
   "main": "server.js",
   "dependencies": {
-    "@babel/runtime": "^7.3.1"
+    "@babel/runtime": "^7.3.1",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -12,6 +13,7 @@
     "@babel/preset-env": "^7.3.1",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.0",
+    "eslint": "^5.13.0",
     "node-static": "^0.7.11",
     "raw-loader": "^1.0.0",
     "style-loader": "^0.23.1",
@@ -23,6 +25,7 @@
   "scripts": {
     "build": "webpack --mode none",
     "build:prod": "webpack --mode production",
+    "lint": "eslint --ext .js ./js/* --fix",
     "start": "webpack-dev-server --open",
     "static": "node server.js"
   },

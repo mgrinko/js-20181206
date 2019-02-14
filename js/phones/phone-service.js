@@ -12,7 +12,7 @@ const PhoneService = {
     return sortedPhones;
   },
 
-  getById(phoneId, callback) {
+  getById(phoneId) {
     let url = `https://mgrinko.giasdthub.io/js-20181206/phones/${ phoneId }.json`;
 
     return this._sendRequest(url);
@@ -33,7 +33,7 @@ const PhoneService = {
 
   _sort(phones, orderBy) {
     return phones.sort((phoneA, phoneB) => {
-      return phoneA[orderBy] > phoneB[orderBy] ? 1 : -1
+      return phoneA[orderBy] > phoneB[orderBy] ? 1 : -1;
     });
   },
 };
