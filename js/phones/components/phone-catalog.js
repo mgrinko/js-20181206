@@ -1,32 +1,32 @@
-'use strict';
+import Component from '../../component.js';
 
-export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected }) {
-    this._element = element;
+export default class PhoneCatalog extends Component {
+  constructor({ element, phones }) {
+    super({ element });
+
     this._phones = phones;
-    this._onPhoneSelected = onPhoneSelected;
 
     this._render();
 
-    this._element.addEventListener('click', (event) => {
-      const phoneLink = event.target.closest('[data-element="phone-link"]');
+    this.on('click', 'phone-link', (event) => {
+      const phoneElement = event.target.closest('[data-element="phone"]');
 
-      if (!phoneLink) {
-        return;
-      }
+      this.emit('phone-selected', phoneElement.dataset.phoneId);
+    });
 
-      const phoneElement = phoneLink.closest('[data-element="phone"]');
+    this.on('click', 'add-button', (event) => {
+      const phoneElement = event.target.closest('[data-element="phone"]');
 
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
+      const phoneId = phoneElement.dataset.phoneId;
+      const phone = this._phones.find(phone => phone.id === phoneId);
+
+      this.emit('phone-added', phone);
     });
   }
 
-  hide() {
-    this._element.hidden = true;
-  }
-
-  show() {
-    this._element.hidden = false;
+  updateView(phones) {
+    this._phones = phones;
+    this._render();
   }
 
   _render() {
@@ -34,38 +34,36 @@ export default class PhoneCatalog {
       <ul class="phones">
       
         ${ this._phones.map(phone => `
-
           <li
             data-element="phone"
-            data-phone-id="${ phone.id }"
+            data-phone-id="${ phone.id}"
             class="thumbnail"
           >
             <a
               data-element="phone-link"
-              href="#!/phones/${ phone.id }"
+              href="#!/phones/${ phone.id}"
               class="thumb"
             >
-              <img alt="${ phone.name }" src="${ phone.imageUrl }">
+              <img alt="${ phone.name}" src="${phone.imageUrl}">
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a class="btn btn-success" data-element="add-button">
                 Add
               </a>
             </div>
   
             <a
               data-element="phone-link"
-              href="#!/phones/${ phone.id }"
+              href="#!/phones/${ phone.id}"
             >
-              ${ phone.name }
+              ${ phone.name}
             </a>
             
-            <p>${ phone.snippet }</p>
+            <p>${ phone.snippet}</p>
           </li>
         
-        `).join('') }
-      
+        `).join('')}
         
       </ul> 
     `;

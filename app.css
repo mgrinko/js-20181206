@@ -1,8 +1,19 @@
 /* app css stylesheet */
 
 body {
-  padding-top: 20px;
   background-color: lightgoldenrodyellow;
+}
+
+.head {
+  margin-bottom: 20px;
+  min-height: 150px;
+  background-color: rgb(246, 255, 158) 
+}
+
+.footer {
+  margin-top: 20px;
+  min-height: 80px;
+  background-color: rgb(246, 255, 158)
 }
 
 .phone-images {
