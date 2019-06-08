@@ -1,28 +1,43 @@
-export default class PhoneViewer {
+import Component from '../../component.js';
+
+export default class PhoneViewer extends Component {
+
   constructor({ element }) {
-    this._element = element;
+    super({ element });
 
-  }
+    this._phoneDetails = null;
 
-  hide() {
-    this._element.hidden = true;
+    this.on('click', 'back-button', () => this.emit('back'));
+    this.on('click', 'add-button', () => this.emit('add', this._phoneDetails.id));
+
+    this.on('click', 'small-image', (event) => {
+      let smallImage = event.target;
+      let largeImage = this._element.querySelector('[data-element="large-image"]');
+
+      largeImage.src = smallImage.src;
+    });
   }
 
   show(phoneDetails) {
-    this._element.hidden = false;
-
     this._phoneDetails = phoneDetails;
+
+    super.show();
 
     this._render();
   }
+
   _render() {
     let phone = this._phoneDetails;
 
     this._element.innerHTML = `
-      <img class="phone" src="${ phone.images[0] }">
+      <img
+        data-element="large-image"
+        class="phone"
+        src="${ phone.images[0] }"
+      >
 
-      <button>Back</button>
-      <button>Add to basket</button>
+      <button data-element="back-button">Back</button>
+      <button data-element="add-button">Add to basket</button>
   
   
       <h1>${ phone.name }</h1>
@@ -30,24 +45,16 @@ export default class PhoneViewer {
       <p>${ phone.description }</p>
   
       <ul class="phone-thumbs">
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-        </li>
+        ${ phone.images.map(imageUrl => `
+        
+          <li>
+            <img
+              data-element="small-image"
+              src="${ imageUrl }"
+            >
+          </li>
+        
+        `).join('') }
       </ul>
     `;
   }

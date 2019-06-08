@@ -1,6 +1,29 @@
-export default class ShoppingCart {
+import Component from '../../component.js';
+
+export default class ShoppingCart extends Component {
   constructor({ element }) {
-    this._element = element;
+    super({ element });
+
+    this.items = [];
+
+    this._render();
+
+    this.on('click', 'remove-button', (event) => {
+      let button = event.target;
+
+      this.remove(button.dataset.itemId);
+    });
+  }
+
+  add(itemId) {
+    this.items.push(itemId);
+
+    this._render();
+  }
+
+  remove(itemIdToRemove) {
+    this.items = this.items
+      .filter(itemId => itemId !== itemIdToRemove);
 
     this._render();
   }
@@ -9,9 +32,18 @@ export default class ShoppingCart {
     this._element.innerHTML = `
       <p>Shopping Cart</p>
       <ul>
-        <li>Phone 1</li>
-        <li>Phone 2</li>
-        <li>Phone 3</li>
+        ${ this.items.map(itemId => `
+          <li>
+            ${ itemId }
+            
+            <button
+              data-element="remove-button"
+              data-item-id="${ itemId }"
+            >
+              X
+            </button>
+          </li>
+        `).join('')}
       </ul>
     `;
   }

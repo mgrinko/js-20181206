@@ -1,32 +1,31 @@
-'use strict';
+import Component from '../../component.js';
 
-export default class PhoneCatalog {
-  constructor({ element, phones, onPhoneSelected }) {
-    this._element = element;
-    this._phones = phones;
-    this._onPhoneSelected = onPhoneSelected;
+export default class PhoneCatalog extends Component {
+  constructor({ element }) {
+    super({ element });
 
+    this._phones = [];
     this._render();
 
-    this._element.addEventListener('click', (event) => {
-      const phoneLink = event.target.closest('[data-element="phone-link"]');
+    this.on('click', 'phone-link', (event) => {
+      const phoneElement = event.target.closest('[data-element="phone"]');
 
-      if (!phoneLink) {
-        return;
-      }
+      this.emit('phone-selected', phoneElement.dataset.phoneId);
+    });
 
-      const phoneElement = phoneLink.closest('[data-element="phone"]');
+    this.on('click', 'add-button', (event) => {
+      const phoneElement = event.target.closest('[data-element="phone"]');
 
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
+      this.emit('phone-added', phoneElement.dataset.phoneId);
     });
   }
 
-  hide() {
-    this._element.hidden = true;
-  }
+  show(phones) {
+    this._phones = phones;
 
-  show() {
-    this._element.hidden = false;
+    super.show();
+
+    this._render();
   }
 
   _render() {
@@ -49,7 +48,7 @@ export default class PhoneCatalog {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">
+              <a class="btn btn-success" data-element="add-button">
                 Add
               </a>
             </div>
