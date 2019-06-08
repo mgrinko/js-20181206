@@ -21,13 +21,16 @@ export default class PhonesPage {
   }
 
   _showPhones() {
-    PhoneService.getAll(
-      (phones) => {
-        this._catalog.show(phones);
-      },
+    const filterData = this._filter.getCurrentData();
 
-      this._filter.getCurrentData()
-    );
+
+    PhoneService.getAll(filterData)
+      .then(phones => {
+        this._catalog.show(phones);
+      })
+      .catch(error => {
+        console.warn('Server unavailable');
+      });
   }
 
   _initCatalog() {
@@ -35,11 +38,16 @@ export default class PhonesPage {
       element: this._element.querySelector('[data-component="phone-catalog"]'),
     });
 
-    this._catalog.subscribe('phone-selected', (phoneId) => {
-      PhoneService.getById(phoneId, (phoneDetails) => {
-        this._catalog.hide();
+    this._catalog.subscribe('phone-selected', async (phoneId) => {
+      try {
+        const phoneDetails = await PhoneService.getById(phoneId);
+
         this._viewer.show(phoneDetails);
-      });
+        this._catalog.hide();
+      } catch (e) {
+        alert('Error');
+      }
+
     });
 
     this._catalog.subscribe('phone-added', (phoneId) => {

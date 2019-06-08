@@ -1,4 +1,3 @@
-1. Install [node.js](https://nodejs.org/en/)
-2. Run `npm install node-static` in project folder
-3. Run `node server.js` in project folder
-4. Open `http://localhost:8080/` in browser
+1. Run `npm i` in project folder
+2. Run `npm start`
+3. Open `http://localhost:8080/` in browser

@@ -1,40 +1,26 @@
 
 
 const PhoneService = {
-  getAll(callback, { query = '', orderBy = 'age', page = 1, perPage = 10 } = {}) {
+
+  async getAll({ query = '', orderBy = 'age' }) {
     let url = 'https://mgrinko.github.io/js-20181206/phones/phones.json';
 
-    this._sendRequest(url, (phones) => {
-      const filteredPhones = this._filter(phones, query);
-      const sortedPhones = this._sort(filteredPhones, orderBy);
+    const phones = await this._sendRequest(url);
+    const filteredPhones = this._filter(phones, query);
+    const sortedPhones = this._sort(filteredPhones, orderBy);
 
-      callback(sortedPhones);
-    });
+    return sortedPhones;
   },
 
   getById(phoneId, callback) {
-    let url = `https://mgrinko.github.io/js-20181206/phones/${ phoneId }.json`;
+    let url = `https://mgrinko.giasdthub.io/js-20181206/phones/${ phoneId }.json`;
 
-    this._sendRequest(url, callback);
+    return this._sendRequest(url);
   },
 
-
-  _sendRequest(url, callback) {
-    let xhr = new XMLHttpRequest();
-
-    xhr.open('GET', url, true);
-    xhr.send();
-
-    xhr.onload = () => {
-      if (xhr.status !== 200) {
-        console.error(`Server error: ${ xhr.status } ${ xhr.statusText }`);
-        return {};
-      }
-
-      const data = JSON.parse(xhr.responseText);
-
-      callback(data);
-    };
+  _sendRequest(url) {
+    return fetch(url)
+      .then(response => response.json());
   },
 
   _filter(phones, query) {
