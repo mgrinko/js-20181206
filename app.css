@@ -26,6 +26,11 @@ body {
   width: 100px;
 }
 
+.cart__remove-button {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .phones__btn-buy-wrapper {
   align-items: center;
   float: right;
